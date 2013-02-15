@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 	public void checkCal() {
 		 Context context = getApplicationContext();    
          ContentResolver contentResolver = context.getContentResolver();
-         
+         //Changes. 
           // get current UTC time
           long now = System.currentTimeMillis();  
           
