@@ -1,6 +1,7 @@
 package com.example.hushcal;
 
 import android.net.Uri;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -9,7 +10,13 @@ import android.database.Cursor;
 import android.view.Menu;
 
 public class MainActivity extends Activity {
-
+	
+	private AudioManager mAudioManager;
+	private boolean mPhoneIsSilent;
+	mAudioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+	checkIfPhoneIsSilent();
+	checkIfPhoneIsLoud();
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,6 +36,7 @@ public class MainActivity extends Activity {
 		 Context context = getApplicationContext();    
          ContentResolver contentResolver = context.getContentResolver();
          //Changes. 
+         
           // get current UTC time
           long now = System.currentTimeMillis();  
           
@@ -63,10 +71,36 @@ public class MainActivity extends Activity {
 	            // Compare current time with calendar start and end times. 
 	            if ((StartTime <= now)&&(EndTime >= now)) {  
 	            	 // Here, instead of printing a message, we should trigger the silence function.
+	            	private void checkIfPhoneIsSilent() {
+	            		int ringerMode = mAudioManager.getRingerMode();
+	            		if (ringerMode == AudioManager.RINGER_MODE_SILENT) {
+	            			mPhoneIsSilent = true;
+	            		}
+	            		else {
+	            			mPhoneIsSilent = false;
+	            		}
+	            	}
+	            	
 	                 System.out.println("An event is currently happening!");  
 	                 break;  
 	            }                  
 	            cur.moveToNext();  
+	            
+	            if ((StartTime >= now)&&(EndTime <= now>)) {
+	            	// Now, trigger the revert to loud function.
+	            	private void checkIfPhoneIsLoud() {
+	            		   int ringerMode = mAudioManager.getRingerMode();
+	            		   if (ringerMode == AudioManager.RINGER_MODE_NORMAL) {
+	            			   mPhoneIsSilent = false;
+	            		   }
+	            		   else {
+	            			   mPhoneIsSilent = true;
+	            		   }
+	            		   }
+	            	
+	            	System.out.println("You just got out of an event!");
+	            	break;
+	            }
 	          }
           }
           cur.close();  
