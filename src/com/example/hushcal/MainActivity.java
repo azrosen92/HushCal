@@ -264,7 +264,7 @@ public class MainActivity extends Activity
 				}
 
 				//Now toggle the UI again
-				//toggleUi();
+				toggleUi();
 			}
 		});
 	}
@@ -304,19 +304,19 @@ public class MainActivity extends Activity
 		   }
 		   }
 	 */
-/*
+
 	public void toggleUi() {
-		ImageView imageView = (ImageView) findViewById(0);
+		ImageView imageView = (ImageView) findViewById(R.id.imageView1);
 		Drawable newPhoneImage;
 		if (mPhoneIsSilent) {
-			newPhoneImage = getResources().getDrawable(0);
+			newPhoneImage = getResources().getDrawable(R.drawable.toggle_status);
 		}
 		else {
-			newPhoneImage = getResources().getDrawable(0);
+			newPhoneImage = getResources().getDrawable(R.drawable.toggle_status_on);
 		}
 		imageView.setImageDrawable(newPhoneImage);
 	}
-*/
+
 
 
 
