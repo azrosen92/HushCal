@@ -1,62 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="41dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/name" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText1"
+        android:layout_below="@+id/editText1"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="datetime|time"
+        android:text="@string/start_time" />
+
+    <EditText
+        android:id="@+id/editText3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText2"
+        android:layout_below="@+id/editText2"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:inputType="datetime|time"
+        android:text="@string/end_time" />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/radioButton1"
+        android:layout_alignBottom="@+id/radioButton1"
+        android:layout_marginLeft="36dp"
+        android:layout_toRightOf="@+id/radioButton1"
+        android:text="@string/vibrate" />
+
+    <RadioButton
+        android:id="@+id/radioButton1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText3"
+        android:layout_below="@+id/editText3"
+        android:layout_marginTop="38dp"
+        android:text="@string/silence" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="10dp"
-        android:layout_y="22dp"
-        android:text="Name" />
+        android:layout_below="@+id/radioButton2"
+        android:layout_marginTop="61dp"
+        android:layout_toRightOf="@+id/radioButton1"
+        android:text="@string/done" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="112dp"
-        android:layout_height="wrap_content"
-        android:layout_x="10dp"
-        android:layout_y="62dp"
-        android:text="Start Time" />
-
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="10dp"
-        android:layout_y="194dp"
-        android:text="Silence" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="190dp"
-        android:layout_y="194dp"
-        android:text="Vibrate" />
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="106dp"
-        android:layout_y="359dp"
-        android:text="Done" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="112dp"
-        android:layout_height="wrap_content"
-        android:layout_x="10dp"
-        android:layout_y="103dp"
-        android:text="End Time" />
-
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="59dp"
-        android:layout_y="267dp"
-        android:text="Add Another Event" />
-
-</AbsoluteLayout>
+</RelativeLayout>
