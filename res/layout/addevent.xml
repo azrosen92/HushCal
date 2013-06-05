@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/name" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/start_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText1"
+        android:layout_marginTop="70dp"
+        android:text="@string/start_time"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/end_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/start_time_label"
+        android:layout_centerVertical="true"
+        android:text="@string/end_time"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/set_end"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/set_start"
+        android:layout_centerVertical="true"
+        android:text="@string/set" />
+
+    <Button
+        android:id="@+id/set_start"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/start_time_label"
+        android:layout_alignBottom="@+id/start_time_label"
+        android:layout_centerHorizontal="true"
+        android:text="@string/set" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/end_time_label"
+        android:layout_marginLeft="20dp" >
+
+        <RadioButton
+            android:id="@+id/silence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="106dp"
+            android:layout_marginLeft="37dp"
+            android:text="@string/silence" />
+
+        <RadioButton
+            android:id="@+id/vibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vibrate" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/submit_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/radioGroup"
+        android:layout_alignRight="@+id/editText1"
+        android:text="@string/done" />
+
+</RelativeLayout>
