@@ -5,18 +5,22 @@
     android:orientation="vertical" >
 
     <Button
-        android:id="@+id/start_time"
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="27dp"
-        android:layout_toLeftOf="@+id/start_time_button"
         android:text="@string/silence_all" />
 
     <Button
         android:id="@+id/start_time_button"
+        android:layout_toLeftOf="@+id/button2"
+        android:text="@string/silence_all" />
+
+    <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

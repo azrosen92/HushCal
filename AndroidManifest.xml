@@ -5,13 +5,20 @@
     android:versionName="1.0" >
 
     <uses-sdk
+<<<<<<< HEAD
         android:minSdkVersion="14"
+=======
+        android:minSdkVersion="7"
+>>>>>>> fe082c9f6ba78dc042be60a2ed2392912e8b295e
         android:targetSdkVersion="17" />
 	
 	<uses-permission
 	    android:name="android.permission.READ_CALENDAR"/>
+<<<<<<< HEAD
 	<uses-permission 
 	    android:name="android.permission.WRITE_CALENDAR" />
+=======
+>>>>>>> fe082c9f6ba78dc042be60a2ed2392912e8b295e
 	
     <application
         android:allowBackup="true"
@@ -26,6 +33,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+<<<<<<< HEAD
         </activity>
         <activity android:name=".SyncCal">
             <intent-filter>
@@ -33,6 +41,9 @@
             </intent-filter>
         </activity>
         <activity android:name="AddEvent"></activity>
+=======
+        </activity>
+>>>>>>> fe082c9f6ba78dc042be60a2ed2392912e8b295e
     </application>
 
 </manifest>

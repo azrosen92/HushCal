@@ -5,7 +5,7 @@
     tools:context=".MainActivity" >
 
     <Button
-        android:id="@+id/start_time"
+        android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -15,14 +15,15 @@
         android:text="@string/sync_cal"
         android:onClick="syncCalClickHandler" />
 
+
+
     <Button
-        android:id="@+id/start_time_button"
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/start_time"
-        android:layout_below="@+id/start_time"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_below="@+id/button1"
         android:layout_marginTop="86dp"
-        android:text="@string/add_event"
-        android:onClick="addEventClickHandler" />
+        android:text="@string/add_event" />
 
 </RelativeLayout>

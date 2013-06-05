@@ -8,6 +8,24 @@ import android.view.View;
 
 
 
+import android.net.Uri;
+import android.media.AudioManager;
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.CalendarContract.Calendars;
+import android.provider.CalendarContract.Events;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.view.View;
+import android.view.Menu;
+import android.widget.Button;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends Activity 
 {
@@ -28,6 +46,11 @@ public class MainActivity extends Activity
 	public void addEventClickHandler(View v) {
 		startActivity(new Intent(this, AddEvent.class));
 	}
+
+
+	
+	}
+
 
 
 	@Override

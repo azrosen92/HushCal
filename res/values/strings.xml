@@ -3,6 +3,9 @@
 
     <string name="app_name">HushCal</string>
     <string name="menu_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="toggle">Toggle</string>
     <string name="name">Name</string>
     <string name="start_time">Start Time</string>
     <string name="end_time">End Time</string>
@@ -14,5 +17,12 @@
     <string name="add_event">Add Event</string>
     <string name="set">set</string>
     <string name="done">Done</string>
+    <string name="add_new_event">Add Another Event</string>
+    <string name="done">Done</string>
+    <string name="silence_all">Silence All Events</string>
+    <string name="vibrate_all">Vibrate All Events</string>
+    <string name="choose_cal">Choose Calendar</string>
+    <string name="sync_cal">Sync with Calendar</string>
+    <string name="add_event">Add Event</string>
 
 </resources>
