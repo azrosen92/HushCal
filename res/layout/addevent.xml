@@ -9,11 +9,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="22dp"
         android:layout_marginLeft="35dp"
+        android:layout_marginTop="22dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/name" />
+        android:text="@string/new_event" />
 
         <requestFocus />
 

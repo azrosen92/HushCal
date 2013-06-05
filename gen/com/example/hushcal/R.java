@@ -49,6 +49,7 @@ public final class R {
         public static final int hello_world=0x7f040001;
         public static final int menu_settings=0x7f040002;
         public static final int name=0x7f040004;
+        public static final int new_event=0x7f040011;
         public static final int set=0x7f040009;
         public static final int silence=0x7f040007;
         public static final int silence_all=0x7f04000c;

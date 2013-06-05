@@ -18,5 +18,6 @@
     <string name="choose_cal">Choose Calendar</string>
     <string name="sync_cal">Sync with Calendar</string>
     <string name="add_event">Add Event</string>
+    <string name="new_event">New Event</string>
 
 </resources>

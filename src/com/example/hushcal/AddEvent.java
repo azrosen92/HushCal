@@ -1,7 +1,9 @@
 package com.example.hushcal;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +12,8 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.support.v4.app.FragmentActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -27,15 +31,18 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 	CustomDateTimePicker custom;
 	private int mButtonPressed;
 	EventTableHandler handler;
-	
+
+	boolean is_end_time_set = false;
+	boolean is_start_time_set = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addevent);
-		
+
 		handler = new EventTableHandler(this);
-		
+
 		final Calendar beginTime = Calendar.getInstance();
 		final Calendar endTime = Calendar.getInstance();
 
@@ -43,29 +50,52 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 		final RadioButton vibrate = (RadioButton)findViewById(R.id.vibrate);
 		final RadioButton silence = (RadioButton)findViewById(R.id.silence);
-		
+
 		Button submit = (Button)findViewById(R.id.submit_event_button);
-		
+
 		//TODO: need to validate that all form fields have been filled before submitting to database
 		submit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				String status = "";
+
 				if (vibrate.isChecked()) status = "vibrate";
 				else if(silence.isChecked()) status = "silence";
-				else {
-					Context context = getApplicationContext();
-					CharSequence text = "Please choose silence/vibrate";
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();
+				String name_text = name.getText().toString();
+
+				Context context = getApplicationContext();
+				CharSequence statusText = "Please choose silence/vibrate";
+				CharSequence nameText="Please enter a name";
+				CharSequence timeText="Please enter a start and end time";
+				int duration = Toast.LENGTH_SHORT;
+
+				//TODO: make list of toasts, then loop through list showing each one
+				List<Toast> toast_list = new ArrayList<Toast>();
+				if(status.equals("")){
+					Toast toast = Toast.makeText(context, statusText, duration);
+					toast_list.add(toast);
 				}
-				Event new_event = new Event(name.getText().toString(), beginTime, endTime, status);
-				insertIntoCalendar(beginTime, endTime, name.getText().toString());
-				handler.addEvent(new_event);
+				if(!is_end_time_set || !is_start_time_set){
+					Toast toast = Toast.makeText(context, timeText, duration);
+					toast_list.add(toast);
+				}
+
+				//if toast list is not empty do this:
+				if(toast_list.isEmpty()) {
+					Event new_event = new Event(name.getText().toString(), beginTime, endTime, status);
+					insertIntoCalendar(beginTime, endTime, name.getText().toString());
+					handler.addEvent(new_event);
+				}
+				else {
+					for(Toast toast : toast_list) {
+						toast.show();
+					}
+				}
+
+				//else show toasts
 			}
 		});
-		
+
 		/**
 		 * see http://stackoverflow.com/questions/15354089/get-date-and-time-picker-value-from-dialog-fragment-and-set-it-in-edit-text
 		 */
@@ -122,6 +152,40 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 		Button end_time_button = (Button)findViewById(R.id.set_end);
 		end_time_button.setOnClickListener(this);
+
+		TextView start_time_text = (TextView)findViewById(R.id.start_time_label);
+		start_time_text.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count){
+				is_start_time_set = true;
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {}
+		});
+
+		TextView end_time_text = (TextView)findViewById(R.id.end_time_label);
+		end_time_text.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count){
+				is_end_time_set = true;
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {}
+		});
+		
+		
+
+
 	}
 
 	@Override
@@ -139,14 +203,14 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 	public void pressedButton(View v) {
 		mButtonPressed = v.getId();
 	}
-	
+
 	public void insertIntoCalendar(Calendar startTime, Calendar endTime, String name) {
 		Intent intent = new Intent(Intent.ACTION_INSERT)
 		.setData(Events.CONTENT_URI)
 		.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis())
 		.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
 		.putExtra(Events.TITLE, name);
-		
+
 		startActivity(intent);
 	}
 }
