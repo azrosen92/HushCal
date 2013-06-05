@@ -11,10 +11,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="22dp"
         android:layout_marginLeft="35dp"
-        android:layout_marginTop="41dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/name" >
+        android:text="@string/name" />
 
         <requestFocus />
 
@@ -86,28 +85,6 @@
         android:layout_alignBottom="@+id/radioGroup"
         android:layout_alignRight="@+id/editText1"
         android:text="@string/done" />
-        
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:inputType="datetime|time"
-        android:text="@string/start_time" />
-
-    <EditText
-        android:id="@+id/editText3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_below="@+id/editText2"
-        android:layout_marginTop="22dp"
-        android:ems="10"
-        android:inputType="datetime|time"
-        android:text="@string/end_time" />
 
 
 
