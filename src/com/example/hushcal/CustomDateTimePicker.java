@@ -64,6 +64,9 @@ public class CustomDateTimePicker implements OnClickListener, DialogInterface, O
 		dialog.setContentView(dialogView);
 	}
 
+	/**
+	 * generates date and time picker dialog box
+	 */
 	public View getDateTimePickerLayout() {
 		LinearLayout.LayoutParams linear_match_wrap = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.MATCH_PARENT,
@@ -110,13 +113,7 @@ public class CustomDateTimePicker implements OnClickListener, DialogInterface, O
 
 		datePicker = new DatePicker(activity);
 		timePicker = new TimePicker(activity);
-		timePicker.setOnTimeChangedListener(this /*new OnTimeChangedListener() {
-			@Override
-			public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-				selectedHour = hourOfDay;
-				selectedMinute = minute;
-			}
-		}*/);
+		timePicker.setOnTimeChangedListener(this);
 
 		viewSwitcher.addView(timePicker);
 		viewSwitcher.addView(datePicker);
@@ -149,6 +146,9 @@ public class CustomDateTimePicker implements OnClickListener, DialogInterface, O
 		return linear_main;
 	}
 
+	/**
+	 * shows the dialog box with current date and time
+	 */
 	public void showDialog() {
 		if (!dialog.isShowing()) {
 			if (calendar_date == null)
@@ -254,6 +254,9 @@ public class CustomDateTimePicker implements OnClickListener, DialogInterface, O
 	    public void onCancel();
 	}
 	
+	/**
+	 * handles clicks of all buttons in dialog box
+	 */
 	@Override
 	public void onClick(View v) {
 	    switch (v.getId()) {
