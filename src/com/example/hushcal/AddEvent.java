@@ -28,13 +28,14 @@ import android.widget.Toast;
 @SuppressWarnings("unused")
 public class AddEvent extends FragmentActivity implements OnClickListener {
 
+	
 	CustomDateTimePicker custom;
 	private int mButtonPressed;
 	EventTableHandler handler;
 
 	boolean is_end_time_set = false;
 	boolean is_start_time_set = false;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
@@ -53,7 +54,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 		Button submit = (Button)findViewById(R.id.submit_event_button);
 
-		//TODO: need to validate that all form fields have been filled before submitting to database
+		//Method for when the "Done" button is pressed.
 		submit.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -63,13 +64,14 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 				else if(silence.isChecked()) status = "silence";
 				String name_text = name.getText().toString();
 
+				//error handling variables
 				Context context = getApplicationContext();
 				CharSequence statusText = "Please choose silence/vibrate";
 				CharSequence nameText="Please enter a name";
 				CharSequence timeText="Please enter a start and end time";
 				int duration = Toast.LENGTH_SHORT;
 
-				//TODO: make list of toasts, then loop through list showing each one
+				//if all fields are not filled show errors as Toast dialogs
 				List<Toast> toast_list = new ArrayList<Toast>();
 				if(status.equals("")){
 					Toast toast = Toast.makeText(context, statusText, duration);
@@ -80,7 +82,6 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 					toast_list.add(toast);
 				}
 
-				//if toast list is not empty do this:
 				if(toast_list.isEmpty()) {
 					Event new_event = new Event(name.getText().toString(), beginTime, endTime, status);
 					insertIntoCalendar(beginTime, endTime, name.getText().toString());
@@ -91,17 +92,21 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 						toast.show();
 					}
 				}
-
-				//else show toasts
 			}
 		});
 
 		/**
+		 * Found this code online, really nice time and date picker dialog
 		 * see http://stackoverflow.com/questions/15354089/get-date-and-time-picker-value-from-dialog-fragment-and-set-it-in-edit-text
 		 */
 		custom = new CustomDateTimePicker(this,
 				new CustomDateTimePicker.ICustomDateTimeListener() {
 
+			/**
+			 * Event thrown when time and date have been set
+			 * sets the TextView to the time and date
+			 * then sets the beginTime variable to be used later
+			 */
 			@Override
 			public void onSet(Dialog dialog, Calendar calendarSelected,
 					Date dateSelected, int year, String monthFullName,
@@ -132,9 +137,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 			}
 
 			@Override
-			public void onCancel() {
-
-			}
+			public void onCancel() {}
 		});
 
 		/**
@@ -153,6 +156,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		Button end_time_button = (Button)findViewById(R.id.set_end);
 		end_time_button.setOnClickListener(this);
 
+		//check to see if start date and time have been set for error handler
 		TextView start_time_text = (TextView)findViewById(R.id.start_time_label);
 		start_time_text.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -168,6 +172,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 					int after) {}
 		});
 
+		//checks to see if end date and time have been set for error handler
 		TextView end_time_text = (TextView)findViewById(R.id.end_time_label);
 		end_time_text.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -194,16 +199,23 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		return true;
 	}
 
+	/**
+	 * event thrown for "set" buttons
+	 * pressedButton(v): tells us which of the two buttons were pressed
+	 * then shows the date and time picker dialog
+	 */
 	@Override
 	public void onClick(View v) {
 		pressedButton(v);
 		custom.showDialog();
 	}
 
+	//tells us which of the two "set" buttons was pressed
 	public void pressedButton(View v) {
 		mButtonPressed = v.getId();
 	}
 
+	//inserts information from the form into the hushcal database
 	public void insertIntoCalendar(Calendar startTime, Calendar endTime, String name) {
 		Intent intent = new Intent(Intent.ACTION_INSERT)
 		.setData(Events.CONTENT_URI)
