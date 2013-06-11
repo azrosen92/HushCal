@@ -8,16 +8,33 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract.Calendars;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 public class SyncCal extends Activity {
 	
+	//TODO: this class only works for one account on the phone, need to add support for multiple
+	//		accounts.
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		String account_name = "";
+		String account_type = "";
+		String owner_account = "";
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.synccal);
 		
+		/**
+		 * generate spinner dropdown menu and populate with calendars from phone
+		 */
 		Spinner calendar_list = (Spinner)findViewById(R.id.calendar_list);
+		ArrayAdapter<String> spinner_array = 
+				new ArrayAdapter<String>(getApplicationContext(), 
+						android.R.layout.simple_spinner_item, 
+						getCalendars(account_name, account_type, owner_account));
+		spinner_array.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		calendar_list.setAdapter(spinner_array);
 		
 	}
 	
