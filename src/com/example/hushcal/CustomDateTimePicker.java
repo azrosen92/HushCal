@@ -24,11 +24,13 @@ import android.widget.ViewSwitcher;
  * -implementation of date/time picker from AddEvent.java
  */
 
-//TODO: this is really buggy
 public class CustomDateTimePicker implements OnClickListener, DialogInterface, OnTimeChangedListener {
 	private DatePicker datePicker;
 	private TimePicker timePicker;
 	private ViewSwitcher viewSwitcher;
+	
+	private boolean isStart;
+	private boolean isEnd;
 
 	private final int SET_DATE = 100, SET_TIME = 101, SET = 102, CANCEL = 103;
 
@@ -149,7 +151,15 @@ public class CustomDateTimePicker implements OnClickListener, DialogInterface, O
 	/**
 	 * shows the dialog box with current date and time
 	 */
-	public void showDialog() {
+	public void showDialog(int view_id) {
+		if (view_id == R.id.set_start) {
+			isStart = true; 
+			isEnd = false;
+		}
+		if (view_id == R.id.set_end) {
+			isEnd = true; 
+			isStart = true;
+		}
 		if (!dialog.isShowing()) {
 			if (calendar_date == null)
 				calendar_date = Calendar.getInstance();
@@ -299,15 +309,17 @@ public class CustomDateTimePicker implements OnClickListener, DialogInterface, O
 	                            .get(Calendar.MINUTE), calendar_date
 	                            .get(Calendar.SECOND), getAMPM(calendar_date));
 	        }
-	        if (dialog.isShowing() && isAutoDismiss)
+	        if (dialog.isShowing() && isAutoDismiss) {
 	            dialog.dismiss();
+	        }
 	        break;
 
 	    case CANCEL:
 	        if (iCustomDateTimeListener != null)
 	            iCustomDateTimeListener.onCancel();
-	        if (dialog.isShowing())
+	        if (dialog.isShowing()) {
 	            dialog.dismiss();
+	        }
 	        break;
 	    }
 	}
@@ -420,13 +432,11 @@ public class CustomDateTimePicker implements OnClickListener, DialogInterface, O
 
 	@Override
 	public void cancel() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void dismiss() {
-		// TODO Auto-generated method stub
 		
 	}
 

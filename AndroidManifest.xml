@@ -30,6 +30,7 @@
       </activity>
       <activity android:name=".AddEvent">
       </activity>
+      <receiver  android:process=":remote" android:name="AlarmReceiver"></receiver>
     </application>
 
 </manifest>

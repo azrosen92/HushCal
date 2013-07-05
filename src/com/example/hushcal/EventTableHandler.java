@@ -46,14 +46,17 @@ public class EventTableHandler extends SQLiteOpenHelper {
 
 	}
 
-	// Adding new contact
+	// Adding new event
 	public void addEvent(Event event) {
 		SQLiteDatabase db = this.getWritableDatabase();
+		
+		Long start_time = event.getStartTime().getTimeInMillis();
+		Long end_time = event.getEndTime().getTimeInMillis();
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_EVENT_NAME, event.getName());
-		values.put(KEY_START_TIME, event.getStartTime());
-		values.put(KEY_END_TIME, event.getEndTime());
+		values.put(KEY_START_TIME, start_time);
+		values.put(KEY_END_TIME, end_time);
 		values.put(KEY_STATUS, event.getStatus());
 
 		db.insert(EVENT_TABLE_NAME, null, values);
@@ -61,29 +64,29 @@ public class EventTableHandler extends SQLiteOpenHelper {
 
 	}
 
-	// Getting All Contacts
+	// Getting All Events
 	public List<Event> getAllEvents() {
 		List<Event> eventsList = new ArrayList<Event>();
 
-		String selectQuery = "SELECT  * FROM " + EVENT_TABLE_NAME;
+		String selectQuery = "SELECT * FROM " + EVENT_TABLE_NAME;
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
 
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar inputCal = Calendar.getInstance();
 
 		if (cursor.moveToFirst()) {
 			do {
 				Event event = new Event();
 				try {
-					event.setName(cursor.getString(0));
-					inputCal.setTime(df.parse(cursor.getString(1)));
+					event.setId(Integer.parseInt(cursor.getString(0)));
+					event.setName(cursor.getString(1));
+					inputCal.setTimeInMillis(cursor.getLong(2));
 					event.setStartTime(inputCal);
-					inputCal.setTime(df.parse(cursor.getString(2)));
+					inputCal.setTimeInMillis(cursor.getLong(3));
 					event.setEndTime(inputCal);
-					event.setStatus(cursor.getString(3));
-				} catch (java.text.ParseException e) {
+					event.setStatus(cursor.getString(4));
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				eventsList.add(event);
@@ -92,7 +95,7 @@ public class EventTableHandler extends SQLiteOpenHelper {
 		return eventsList;
 	}
 
-	// Getting contacts Count
+	// Getting events Count
 	public int getEventsCount() {
 		String countQuery = "SELECT * FROM " + EVENT_TABLE_NAME;
 
@@ -102,25 +105,30 @@ public class EventTableHandler extends SQLiteOpenHelper {
 		return cursor.getCount();
 	}
 
-	// Updating single contact
+	// Updating single event
 	public int updateEvent(Event event) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 		
+		Long start_time = event.getStartTime().getTimeInMillis();
+		Long end_time = event.getEndTime().getTimeInMillis();
+
+		if (event.getStartTime() != null && event.getEndTime() != null) {
+			values.put(KEY_START_TIME, start_time);
+			values.put(KEY_END_TIME, end_time);
+		}
 		values.put(KEY_EVENT_NAME, event.getName());
-		values.put(KEY_START_TIME, event.getStartTime());
-		values.put(KEY_END_TIME, event.getEndTime());
 		values.put(KEY_STATUS, event.getStatus());
-		
+
 		return db.update(EVENT_TABLE_NAME, values, KEY_ID + "=?", 
 				new String[] { String.valueOf(event.getId()) });
 	}
 
-	// Deleting single contact
+	// Deleting single event
 	public void deleteEvent(Event event) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
+
 		db.delete(EVENT_TABLE_NAME, KEY_ID + "=?", 
 				new String[] { String.valueOf(event.getId()) });
 		db.close();

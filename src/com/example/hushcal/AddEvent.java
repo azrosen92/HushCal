@@ -6,10 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
 import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
@@ -28,19 +32,21 @@ import android.widget.Toast;
 @SuppressWarnings("unused")
 public class AddEvent extends FragmentActivity implements OnClickListener {
 
-	
 	CustomDateTimePicker custom;
 	private int mButtonPressed;
 	EventTableHandler handler;
+	
+	static Context app_context;
 
 	boolean is_end_time_set = false;
 	boolean is_start_time_set = false;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addevent);
+		app_context = getApplicationContext();
 
 		handler = new EventTableHandler(this);
 
@@ -82,10 +88,17 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 					toast_list.add(toast);
 				}
 
-				if(toast_list.isEmpty()) {
-					Event new_event = new Event(name.getText().toString(), beginTime, endTime, status);
+				if(toast_list.isEmpty()) {					
 					insertIntoCalendar(beginTime, endTime, name.getText().toString());
+					int event_id = getEventIdFromCalendar(beginTime, endTime, name.getText().toString());
+					Event new_event = new Event(event_id, name.getText().toString(), beginTime, endTime, status);
 					handler.addEvent(new_event);
+					EventScheduler.schedule(app_context, new_event);
+					
+					//go back to home page
+//					Toast.makeText(app_context, "Event created", Toast.LENGTH_SHORT).show();
+//					Intent home_page = new Intent(app_context, MainActivity.class);
+//					startActivity(home_page);
 				}
 				else {
 					for(Toast toast : toast_list) {
@@ -114,22 +127,26 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 					String weekDayFullName, String weekDayShortName,
 					int hour24, int hour12, int min, int sec,
 					String AM_PM) {
+				String min_string = "" + min;
+				if (min < 10) {
+					min_string = "0" + min;
+				}
 				if (mButtonPressed == R.id.set_start) {
 					((TextView) findViewById(R.id.start_time_label))
-					.setText(calendarSelected
-							.get(Calendar.DAY_OF_MONTH)
-							+ "/" + (monthNumber+1) + "/" + year
-							+ ", " + hour12 + ":" + min
+					.setText((monthNumber+1)
+							+ "/" + calendarSelected
+							.get(Calendar.DAY_OF_MONTH) + "/" + year
+							+ ", " + hour12 + ":" + min_string
 							+ " " + AM_PM);
 					//TODO: check month for off by one error
 					beginTime.set(year, monthNumber+1, Calendar.DAY_OF_MONTH, hour24, min);
 				}
 				else if (mButtonPressed == R.id.set_end) {
 					((TextView) findViewById(R.id.end_time_label))
-					.setText(calendarSelected
-							.get(Calendar.DAY_OF_MONTH)
-							+ "/" + (monthNumber+1) + "/" + year
-							+ ", " + hour12 + ":" + min
+					.setText((monthNumber+1)
+							+ "/" + calendarSelected
+							.get(Calendar.DAY_OF_MONTH) + "/" + year
+							+ ", " + hour12 + ":" + min_string
 							+ " " + AM_PM);
 					//TODO: check month for off by one error
 					endTime.set(year, monthNumber+1, Calendar.DAY_OF_MONTH, hour24, min);
@@ -187,10 +204,35 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 			public void beforeTextChanged(CharSequence s, int start, int count,
 					int after) {}
 		});
-		
-		
 
 
+
+
+	}
+
+	//returns the event_id from the android calendar, queried by event name, and time
+	//the only problem I could see with this is if there are two events at the same time
+	//with the same name, in which case I can't see it mattering which one you get the id from.
+	protected int getEventIdFromCalendar(Calendar beginTime, Calendar endTime,
+			String title) {
+		int event_id = 0;
+		
+		// Run query
+		Cursor cur = null;
+		ContentResolver cr = getContentResolver();
+		Uri uri = Calendars.CONTENT_URI;
+		String[] projection = { Events.ORIGINAL_ID };
+		String selection = "((" + Events.DTSTART + " = ?) AND (" 
+				+ Events.DTEND + " = ?) AND (" + Events.TITLE + " = ?))";
+		String[] selectionArgs = { String.valueOf(beginTime.getTimeInMillis()), 
+				String.valueOf(endTime.getTimeInMillis()), 
+				title};
+		cur = cr.query(uri, projection, selection, selectionArgs, "id DESC");
+		
+		if(cur.moveToNext()) {
+			event_id = Integer.parseInt(cur.getString(0));
+		}
+		return event_id;
 	}
 
 	@Override
@@ -207,7 +249,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		pressedButton(v);
-		custom.showDialog();
+		custom.showDialog(v.getId());
 	}
 
 	//tells us which of the two "set" buttons was pressed
@@ -217,12 +259,17 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 	//inserts information from the form into the hushcal database
 	public void insertIntoCalendar(Calendar startTime, Calendar endTime, String name) {
-		Intent intent = new Intent(Intent.ACTION_INSERT)
-		.setData(Events.CONTENT_URI)
-		.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis())
-		.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis())
-		.putExtra(Events.TITLE, name);
-
-		startActivity(intent);
+		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
+			Intent intent = new Intent(Intent.ACTION_INSERT);
+			intent.setType("vnd.android.cursor.item/event");
+			intent.setData(CalendarContract.Events.CONTENT_URI);
+			intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
+			intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
+			intent.putExtra(Events.TITLE, name);
+			startActivity(intent);
+		}
+		else {
+			//TODO: add event with google calendar api (low priority, maybe save for update)
+		}
 	}
 }

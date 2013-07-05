@@ -45,16 +45,16 @@ public class Event {
 		this.name = name;
 	}
 	
-	public String getStartTime() {
-		return this.start_time.toString();
+	public Calendar getStartTime() {
+		return this.start_time;
 	}
 	
 	public void setStartTime(Calendar start_time) {
 		this.start_time = start_time;
 	}
 	
-	public String getEndTime() {
-		return this.end_time.toString();
+	public Calendar getEndTime() {
+		return this.end_time;
 	}
 	
 	public void setEndTime(Calendar end_time) {
