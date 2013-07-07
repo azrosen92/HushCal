@@ -2,26 +2,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity"
+    android:background="#F1F1F1" >
 
-    <Button
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/logo" />
+
+    <ImageButton
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginTop="70dp"
+        android:background="#000000"
+        android:contentDescription="@string/sync_cal"
         android:onClick="syncCalClickHandler"
-        android:text="@string/sync_cal" />
+        android:src="@drawable/hush_calendar" />
 
-    <Button
+    <ImageButton
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="58dp"
+        android:background="#000000"
+        android:contentDescription="@string/add_event"
         android:onClick="addEventClickHandler"
-        android:text="@string/add_event" />
+        android:src="@drawable/add_event" />
 
 </RelativeLayout>

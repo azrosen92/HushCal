@@ -19,5 +19,6 @@
     <string name="sync_cal">Sync with Calendar</string>
     <string name="add_event">Add Event</string>
     <string name="new_event">New Event</string>
+    <string name="logo">Logo</string>
 
 </resources>
