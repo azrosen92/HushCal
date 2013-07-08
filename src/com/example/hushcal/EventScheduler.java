@@ -6,10 +6,12 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 public class EventScheduler {
 
 	public static void schedule(Context ctx, Event event) {
+		//schedule method is being called, but the alarm manager is not being set for some reason
 		Calendar start = event.getStartTime();
 		long end = event.getEndTime().getTimeInMillis();
 		String status = event.getStatus();

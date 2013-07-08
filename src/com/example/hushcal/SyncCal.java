@@ -136,6 +136,7 @@ public class SyncCal extends Activity {
 			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
 			
 			while(cur.moveToNext()) {
+				//TODO: getting null for event_id
 				String event_id = cur.getString(EVENT_ID_INDEX);
 				String event_title = cur.getString(EVENT_TITLE_INDEX);
 				Calendar event_start = Calendar.getInstance();
@@ -191,7 +192,7 @@ public class SyncCal extends Activity {
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
 			//TODO: this needs to work every time the spinner changes
-			String selected = "azrosen92@gmail.com";//parent.getItemAtPosition(pos).toString();
+			String selected = parent.getItemAtPosition(pos).toString();
 			events_list = getCalendarEvents(selected);
 			TableLayout events_table = (TableLayout)findViewById(R.id.event_table);
 			//events_table.removeAllViewsInLayout();
