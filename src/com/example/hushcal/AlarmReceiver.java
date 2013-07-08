@@ -14,7 +14,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Toast.makeText(context, "changing status", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(context, "changing status", Toast.LENGTH_SHORT).show();
 		ContextWrapper c = new ContextWrapper(context);
 		AudioManager am = (AudioManager) c.getBaseContext().getSystemService(Context.AUDIO_SERVICE);
 		

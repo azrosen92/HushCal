@@ -90,9 +90,10 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 				if(toast_list.isEmpty()) {					
 					insertIntoCalendar(beginTime, endTime, name.getText().toString());
-					int event_id = getEventIdFromCalendar(beginTime, endTime, name.getText().toString());
+					int event_id = 1; //getEventIdFromCalendar(beginTime, endTime, name.getText().toString());
 					Event new_event = new Event(event_id, name.getText().toString(), beginTime, endTime, status);
 					handler.addEvent(new_event);
+					//TODO: event scheduler not working need to read broadcastreceiver docs
 					EventScheduler.schedule(app_context, new_event);
 					
 					//go back to home page
@@ -220,14 +221,14 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		// Run query
 		Cursor cur = null;
 		ContentResolver cr = getContentResolver();
-		Uri uri = Calendars.CONTENT_URI;
+		Uri uri = Events.CONTENT_URI;
 		String[] projection = { Events.ORIGINAL_ID };
 		String selection = "((" + Events.DTSTART + " = ?) AND (" 
 				+ Events.DTEND + " = ?) AND (" + Events.TITLE + " = ?))";
 		String[] selectionArgs = { String.valueOf(beginTime.getTimeInMillis()), 
 				String.valueOf(endTime.getTimeInMillis()), 
 				title};
-		cur = cr.query(uri, projection, selection, selectionArgs, "id DESC");
+		cur = cr.query(uri, projection, selection, selectionArgs, "original_id DESC");
 		
 		if(cur.moveToNext()) {
 			event_id = Integer.parseInt(cur.getString(0));
