@@ -1,58 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <EditText
-        android:id="@+id/editText1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="35dp"
-        android:layout_marginTop="22dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/new_event" />
-
+    android:layout_height="match_parent"
+    android:background="#F1F1F1" >
         <requestFocus />
-
-    <TextView
-        android:id="@+id/start_time_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="70dp"
-        android:text="@string/start_time"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/end_time_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/start_time_label"
-        android:layout_centerVertical="true"
+        android:layout_alignBottom="@+id/set_end"
+        android:layout_alignTop="@+id/set_end"
+        android:layout_toLeftOf="@+id/set_end"
+        android:background="#C1C1C1"
         android:text="@string/end_time"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/set_end"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/set_start"
-        android:layout_centerVertical="true"
-        android:text="@string/set" />
-
-    <Button
-        android:id="@+id/set_start"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/start_time_label"
-        android:layout_alignBottom="@+id/start_time_label"
-        android:layout_centerHorizontal="true"
-        android:text="@string/set" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#FFFFFF"
+        android:width="150dp" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -63,14 +27,6 @@
         android:layout_marginLeft="20dp" >
 
         <RadioButton
-            android:id="@+id/silence"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="106dp"
-            android:layout_marginLeft="37dp"
-            android:text="@string/silence" />
-
-        <RadioButton
             android:id="@+id/vibrate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,16 +34,86 @@
 
     </RadioGroup>
 
-    <Button
-        android:id="@+id/submit_event_button"
+    <ImageButton
+        android:id="@+id/set_start"
+        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/radioGroup"
-        android:layout_alignRight="@+id/editText1"
-        android:text="@string/done" />
+        android:layout_below="@+id/editText1"
+        android:layout_marginTop="37dp"
+        android:layout_toRightOf="@+id/silence"
+        android:background="#000000"
+        android:contentDescription="@string/set"
+        android:src="@drawable/set" />
 
+    <TextView
+        android:id="@+id/start_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/set_start"
+        android:layout_alignTop="@+id/set_start"
+        android:layout_toLeftOf="@+id/set_start"
+        android:background="#C1C1C1"
+        android:text="@string/start_time"
+        android:textColor="#FFFFFF"
+        android:width="150dp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
+    <ImageButton
+        android:id="@+id/set_end"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/set_start"
+        android:layout_marginTop="55dp"
+        android:layout_toRightOf="@+id/silence"
+        android:background="#000000"
+        android:contentDescription="@string/set"
+        android:src="@drawable/set" />
 
+        <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/logo" />
 
+        <EditText
+            android:id="@+id/editText1"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/imageView1"
+            android:background="#C9C9C9"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:text="@string/new_event"
+            android:textColor="#FFFFFF" />
+
+        <ImageButton
+            android:id="@+id/submit_event_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/end_time_label"
+            android:layout_alignRight="@+id/set_end"
+            android:layout_below="@+id/radioGroup"
+            android:layout_marginTop="52dp"
+            android:background="#F1F1F1"
+            android:contentDescription="@string/done"
+            android:src="@drawable/done" />
+
+        <RadioButton
+            android:id="@+id/silence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/radioGroup"
+            android:layout_marginTop="32dp"
+            android:layout_toRightOf="@+id/radioGroup"
+            android:text="@string/silence" />
 
 </RelativeLayout>
