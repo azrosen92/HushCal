@@ -3,7 +3,9 @@
     android:layout_height="match_parent"
     android:background="#F1F1F1" >
 
-    <requestFocus />
+    <requestFocus
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/end_time_label"
@@ -17,7 +19,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
         android:width="150dp" />
-
 
     <TextView
         android:id="@+id/start_time_label"
@@ -68,25 +69,15 @@
         android:contentDescription="@string/set"
         android:src="@drawable/set" />
 
-    <RadioButton
-        android:id="@+id/vibrate"
+    <RadioGroup
+        android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/silence"
         android:layout_alignBottom="@+id/silence"
         android:layout_alignLeft="@+id/submit_event_button"
-        android:button="@drawable/vibrate" />
-
-    <ImageButton
-        android:id="@+id/submit_event_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/end_time_label"
-        android:layout_below="@+id/silence"
-        android:layout_marginTop="22dp"
-        android:background="#F1F1F1"
-        android:contentDescription="@string/done"
-        android:src="@drawable/done" />
+        android:checkedButton="@+id/vibrate" >
+    </RadioGroup>
 
     <ImageButton
         android:id="@+id/set_start"
@@ -101,13 +92,33 @@
         android:contentDescription="@string/set"
         android:src="@drawable/set" />
 
+    <ImageButton
+        android:id="@+id/submit_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/set_end"
+        android:layout_marginBottom="80dp"
+        android:background="#F1F1F1"
+        android:contentDescription="@string/done"
+        android:src="@drawable/done" />
+
     <RadioButton
         android:id="@+id/silence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/submit_event_button"
         android:layout_alignRight="@+id/submit_event_button"
-        android:layout_below="@+id/end_time_label"
-        android:layout_marginTop="34dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginRight="18dp"
         android:button="@drawable/silent" />
+
+    <RadioButton
+        android:id="@+id/vibrate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/radioGroup1"
+        android:layout_alignTop="@+id/silence"
+        android:button="@drawable/vibrate" />
 
 </RelativeLayout>
