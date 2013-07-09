@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class SyncCal extends Activity {
 	
@@ -84,7 +85,7 @@ public class SyncCal extends Activity {
 			// Run query
 			Cursor cur = null;
 			ContentResolver cr = getContentResolver();
-			Uri uri = Calendars.CONTENT_URI;	
+			Uri uri = Calendars.CONTENT_URI;
 			// Submit the query and get a Cursor object back. 
 			cur = cr.query(uri, null, null, null, null);
 
@@ -168,8 +169,9 @@ public class SyncCal extends Activity {
 			//If the event is already in hushcal database, then update its status
 			if (event_status_map.keySet().contains(event_name)) {
 				//get the id from the Event with name event_name
-				int event_id = events_list.get(event_name).getId();
-				Event updated_event = new Event(event_id, event_name, null, null, status);
+				//int event_id = events_list.get(event_name).getId();
+				Event updated_event = events_list.get(event_name); //new Event(event_id, event_name, null, null, status);
+				updated_event.setStatus(status);
 				//TODO: unschedule old event (might not have to do this because of PendingIntent.FLAG_UPDATE_CURRENT, need to test)
 				handler.updateEvent(updated_event);			
 				EventScheduler.schedule(app_context, updated_event);
@@ -195,7 +197,7 @@ public class SyncCal extends Activity {
 			String selected = parent.getItemAtPosition(pos).toString();
 			events_list = getCalendarEvents(selected);
 			TableLayout events_table = (TableLayout)findViewById(R.id.event_table);
-			//events_table.removeAllViewsInLayout();
+			events_table.removeAllViews();
 			for (String event : events_list.keySet()) {
 				//make row in table including event name and silence/vibrate radio button
 				//and maybe a pop up that shows more info about event, such as start and
