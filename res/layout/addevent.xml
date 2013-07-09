@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F1F1F1" >
@@ -17,7 +18,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
         android:width="150dp" />
-
 
     <TextView
         android:id="@+id/start_time_label"
@@ -68,26 +68,6 @@
         android:contentDescription="@string/set"
         android:src="@drawable/set" />
 
-    <RadioButton
-        android:id="@+id/vibrate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/silence"
-        android:layout_alignBottom="@+id/silence"
-        android:layout_alignLeft="@+id/submit_event_button"
-        android:button="@drawable/vibrate" />
-
-    <ImageButton
-        android:id="@+id/submit_event_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/end_time_label"
-        android:layout_below="@+id/silence"
-        android:layout_marginTop="22dp"
-        android:background="#F1F1F1"
-        android:contentDescription="@string/done"
-        android:src="@drawable/done" />
-
     <ImageButton
         android:id="@+id/set_start"
         style="?android:attr/buttonStyleSmall"
@@ -101,13 +81,40 @@
         android:contentDescription="@string/set"
         android:src="@drawable/set" />
 
-    <RadioButton
-        android:id="@+id/silence"
+    <ImageButton
+        android:id="@+id/submit_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/submit_event_button"
+        android:layout_alignLeft="@+id/end_time_label"
+        android:layout_below="@+id/radioGroup1"
+        android:layout_marginTop="65dp"
+        android:background="#F1F1F1"
+        android:contentDescription="@string/done"
+        android:src="@drawable/done" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/end_time_label"
-        android:layout_marginTop="34dp"
-        android:button="@drawable/silent" />
+        android:layout_marginTop="32dp"
+        android:layout_toLeftOf="@+id/set_end"
+        android:baselineAligned="false"
+        android:checkedButton="@id/vibrate"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/vibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:button="@drawable/vibrate" />
+
+        <RadioButton
+            android:id="@+id/silence"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:button="@drawable/silent" />
+    </RadioGroup>
 
 </RelativeLayout>
