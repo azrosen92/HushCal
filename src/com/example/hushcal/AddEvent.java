@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +59,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		final RadioButton vibrate = (RadioButton)findViewById(R.id.vibrate);
 		final RadioButton silence = (RadioButton)findViewById(R.id.silence);
 
-		Button submit = (Button)findViewById(R.id.submit_event_button);
+		ImageButton submit = (ImageButton)findViewById(R.id.submit_event_button);
 
 		//Method for when the "Done" button is pressed.
 		submit.setOnClickListener(new OnClickListener() {
@@ -168,10 +169,10 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		 */
 		custom.setDate(Calendar.getInstance());
 
-		Button start_time_button = (Button)findViewById(R.id.set_start);
+		ImageButton start_time_button = (ImageButton)findViewById(R.id.set_start);
 		start_time_button.setOnClickListener(this);
 
-		Button end_time_button = (Button)findViewById(R.id.set_end);
+		ImageButton end_time_button = (ImageButton)findViewById(R.id.set_end);
 		end_time_button.setOnClickListener(this);
 
 		//check to see if start date and time have been set for error handler
