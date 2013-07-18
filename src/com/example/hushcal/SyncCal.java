@@ -28,12 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SyncCal extends Activity {
-	
+
 	private static HashMap<String, Long> cal_map;
 	private static EventTableHandler handler;
 	private static HashMap<String, Event> events_list; //list of events constructed from data taken from android calendar
 	private static HashMap<String, String> event_status_map; //list of event names and statuses taken from hushcal database
-	
+
 	static Context app_context;
 
 	@Override
@@ -42,7 +42,7 @@ public class SyncCal extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.synccal);
 		app_context = getApplicationContext();
-		
+
 		handler = new EventTableHandler(this);
 
 		/**
@@ -53,7 +53,7 @@ public class SyncCal extends Activity {
 		cal_map = getCalendars();
 		ArrayList<String> selector_array = new ArrayList<String>();
 		selector_array.addAll(cal_map.keySet());
-		
+
 		List<Event> events_list = handler.getAllEvents(); //turn this into event_status_map
 		event_status_map = new HashMap<String, String>();
 		for (Event event : events_list) {
@@ -61,7 +61,7 @@ public class SyncCal extends Activity {
 			String status = event.getStatus();
 			event_status_map.put(title, status);
 		}
-		
+
 		ArrayAdapter<String> spinner_array = 
 				new ArrayAdapter<String>(getApplicationContext(), 
 						android.R.layout.simple_spinner_item, 
@@ -93,7 +93,7 @@ public class SyncCal extends Activity {
 			while(cur.moveToNext()) {
 				long cal_id = cur.getLong(CALENDAR_ID_INDEX);
 				String cal_display_name = cur.getString(CALENDAR_DISPLAY_NAME_INDEX);
-				
+
 				results_list.put(cal_display_name, cal_id);
 			}
 
@@ -105,14 +105,14 @@ public class SyncCal extends Activity {
 
 	}
 
-	
+
 	// Projection array. Creating indices for this array instead of doing
 	// dynamic lookups improves performance.
 	public static final String[] EVENT_PROJECTION = new String[] {
-	    Events.ORIGINAL_ID,                     // 0
-	    Events.TITLE,                  			// 1
-	    Events.DTSTART,							// 2
-	    Events.DTEND							// 3
+		Events._ID,                     		// 0
+		Events.TITLE,                  			// 1
+		Events.DTSTART,							// 2
+		Events.DTEND							// 3
 	};
 
 	// The indices for the projection array above.
@@ -125,9 +125,9 @@ public class SyncCal extends Activity {
 	private HashMap<String, Event> getCalendarEvents(String calendar_name) 
 	{
 		HashMap<String, Event> events = new HashMap<String, Event>();
-		
+
 		String calendarID = cal_map.get(calendar_name).toString();
-		
+
 		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
 			Cursor cur = null;
 			ContentResolver cr = getContentResolver();
@@ -135,7 +135,7 @@ public class SyncCal extends Activity {
 			String selection = "((" + Events.CALENDAR_ID + " = ?))";
 			String [] selectionArgs = new String[] {calendarID};
 			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
-			
+
 			while(cur.moveToNext()) {
 				//TODO: getting null for event_id
 				String event_id = cur.getString(EVENT_ID_INDEX);
@@ -144,28 +144,30 @@ public class SyncCal extends Activity {
 				event_start.setTimeInMillis(cur.getLong(EVENT_START_INDEX));
 				Calendar event_end = Calendar.getInstance();
 				event_end.setTimeInMillis(cur.getLong(EVENT_END_INDEX));
-		
+
 				Event event = new Event(Integer.parseInt(event_id), event_title, event_start, event_end, null);
-				events.put(event_title, event);
+				if (event != null) {
+					events.put(event_title, event);
+				}
 			}
 		} else {
 			//TODO: get events from google calendar api - for previous android versions (low priority, maybe save for update)
 		}
-		
+
 		return events;
 
 	}
-	
+
 	OnCheckedChangeListener event_status_listener = new OnCheckedChangeListener() {
 
 		@Override
 		public void onCheckedChanged(RadioGroup group, int checkedId) {
 			RadioButton checkedRadioButton = (RadioButton) findViewById(checkedId);
 			String status = checkedRadioButton.getText().toString();
-			
+
 			TableRow parent = (TableRow) group.getParent();
 			String event_name = ((TextView) parent.getChildAt(0)).getText().toString();
-			
+
 			//If the event is already in hushcal database, then update its status
 			if (event_status_map.keySet().contains(event_name)) {
 				//get the id from the Event with name event_name
@@ -184,16 +186,15 @@ public class SyncCal extends Activity {
 				handler.addEvent(updated_event);
 				EventScheduler.schedule(app_context, updated_event);
 			}
-			
+
 		}		
-		
+
 	};
 
 	OnItemSelectedListener spinner_listener = new OnItemSelectedListener() {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
-			//TODO: this needs to work every time the spinner changes
 			String selected = parent.getItemAtPosition(pos).toString();
 			events_list = getCalendarEvents(selected);
 			TableLayout events_table = (TableLayout)findViewById(R.id.event_table);
@@ -207,24 +208,28 @@ public class SyncCal extends Activity {
 				TextView text = (TextView) tr.getChildAt(0);
 				text.setText(event);
 				events_table.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-																	  TableLayout.LayoutParams.WRAP_CONTENT));
+						TableLayout.LayoutParams.WRAP_CONTENT));
 
 				RadioGroup status_group = (RadioGroup) tr.getChildAt(1);
-				
+
 				//when you generate the table, populate it's radio buttons based on their
 				//status in database
-				if (event_status_map.get(event).equals("vibrate")) {
-					events_list.get(event).setStatus("vibrate");
-					((RadioButton) status_group.getChildAt(1)).setChecked(true);
-				} else if (event_status_map.get(event).equals("silence")) {
-					events_list.get(event).setStatus("silence");
-					((RadioButton) status_group.getChildAt(0)).setChecked(true);
+				try {
+					if (event_status_map.get(event).equalsIgnoreCase("vibrate")) {
+						events_list.get(event).setStatus("vibrate");
+						((RadioButton) status_group.getChildAt(1)).setChecked(true);
+					} else if (event_status_map.get(event).equalsIgnoreCase("silence")) {
+						events_list.get(event).setStatus("silence");
+						((RadioButton) status_group.getChildAt(0)).setChecked(true);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				
+
 				// query Events database each time a radio button is pressed to
 				// update its silence/vibrate status
 				status_group.setOnCheckedChangeListener(event_status_listener);
-				
+
 
 			}
 		}
@@ -232,9 +237,9 @@ public class SyncCal extends Activity {
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			
+
 		}
 	};
-	
+
 
 }

@@ -91,16 +91,15 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 				if(toast_list.isEmpty()) {					
 					insertIntoCalendar(beginTime, endTime, name.getText().toString());
-					int event_id = 1; //getEventIdFromCalendar(beginTime, endTime, name.getText().toString());
+					int event_id = 1;//getEventIdFromCalendar(beginTime, endTime, name.getText().toString());
 					Event new_event = new Event(event_id, name.getText().toString(), beginTime, endTime, status);
 					handler.addEvent(new_event);
-					//TODO: event scheduler not working need to read broadcastreceiver docs
 					EventScheduler.schedule(app_context, new_event);
 					
 					//go back to home page
-//					Toast.makeText(app_context, "Event created", Toast.LENGTH_SHORT).show();
-//					Intent home_page = new Intent(app_context, MainActivity.class);
-//					startActivity(home_page);
+					Toast.makeText(app_context, "Event created", Toast.LENGTH_SHORT).show();
+					Intent home_page = new Intent(app_context, MainActivity.class);
+					startActivity(home_page);
 				}
 				else {
 					for(Toast toast : toast_list) {
@@ -140,8 +139,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 							.get(Calendar.DAY_OF_MONTH) + "/" + year
 							+ ", " + hour12 + ":" + min_string
 							+ " " + AM_PM);
-					//TODO: check month for off by one error
-					beginTime.set(year, monthNumber+1, Calendar.DAY_OF_MONTH, hour24, min);
+					beginTime.set(year, monthNumber, date, hour24, min);
 				}
 				else if (mButtonPressed == R.id.set_end) {
 					((TextView) findViewById(R.id.end_time_label))
@@ -150,8 +148,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 							.get(Calendar.DAY_OF_MONTH) + "/" + year
 							+ ", " + hour12 + ":" + min_string
 							+ " " + AM_PM);
-					//TODO: check month for off by one error
-					endTime.set(year, monthNumber+1, Calendar.DAY_OF_MONTH, hour24, min);
+					endTime.set(year, monthNumber, date, hour24, min);
 				}
 			}
 
