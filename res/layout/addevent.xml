@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/set_end"
+        android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/set_end"
         android:layout_toLeftOf="@+id/set_end"
         android:background="#C1C1C1"
@@ -24,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/set_start"
+        android:layout_alignParentLeft="true"
         android:layout_alignTop="@+id/set_start"
         android:layout_toLeftOf="@+id/set_start"
         android:background="#C1C1C1"
@@ -37,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@color/blue"
         android:contentDescription="@string/logo"
@@ -75,7 +78,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/editText1"
-        android:layout_marginRight="68dp"
         android:layout_marginTop="53dp"
         android:background="#000000"
         android:contentDescription="@string/set"
@@ -85,7 +87,8 @@
         android:id="@+id/submit_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/end_time_label"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/radioGroup1"
         android:layout_marginTop="65dp"
         android:background="#F1F1F1"
@@ -96,9 +99,10 @@
         android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/end_time_label"
         android:layout_marginTop="32dp"
-        android:layout_toLeftOf="@+id/set_end"
         android:baselineAligned="false"
         android:checkedButton="@+id/vibrate"
         android:gravity="center"
@@ -108,13 +112,16 @@
             android:id="@+id/vibrate"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:button="@drawable/vibrate" />
+            android:button="@drawable/vibrate"
+            android:minWidth="50dp" />
 
         <RadioButton
             android:id="@+id/silence"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:button="@drawable/silent" />
+            android:button="@drawable/silent"
+            android:minWidth="50dp" />
+
     </RadioGroup>
 
 </RelativeLayout>
