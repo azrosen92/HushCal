@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+//TODO: might want to change start and end time values to long so they can be compared easier
 public class EventTableHandler extends SQLiteOpenHelper {
 
 	private static final String KEY_ID = "id";
@@ -22,7 +23,8 @@ public class EventTableHandler extends SQLiteOpenHelper {
 	private static final String KEY_END_TIME = "event_end";
 	private static final String KEY_STATUS = "status";
 
-	private static final int DATABASE_VERSION = 2;
+	private static int DATABASE_VERSION = 6; //accidentally upgrdaded the db a few times so just leave this at 6
+	
 	private static final String EVENT_TABLE_NAME = "events";
 	private static final String EVENT_TABLE_CREATE =
 			"CREATE TABLE " + EVENT_TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY, " 
@@ -30,6 +32,7 @@ public class EventTableHandler extends SQLiteOpenHelper {
 					+ KEY_STATUS + " TEXT" +  ");";
 
 	EventTableHandler (Context context) {
+		//DATABASE_VERSION += 1;
 		super(context, "database", null, DATABASE_VERSION);
 	}
 
@@ -68,7 +71,8 @@ public class EventTableHandler extends SQLiteOpenHelper {
 	public List<Event> getAllEvents() {
 		List<Event> eventsList = new ArrayList<Event>();
 
-		String selectQuery = "SELECT * FROM " + EVENT_TABLE_NAME;
+		String selectQuery = "SELECT * FROM " + EVENT_TABLE_NAME;// + " WHERE " + KEY_START_TIME + " >= ?";
+		//String[] selectionArgs = {Calendar.getInstance().toString()};
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
@@ -121,8 +125,8 @@ public class EventTableHandler extends SQLiteOpenHelper {
 		values.put(KEY_EVENT_NAME, event.getName());
 		values.put(KEY_STATUS, event.getStatus());
 
-		return db.update(EVENT_TABLE_NAME, values, KEY_ID + "=?", 
-				new String[] { String.valueOf(event.getId()) });
+		return db.update(EVENT_TABLE_NAME, values, KEY_EVENT_NAME + " = ?" /* AND " + KEY_START_TIME + " = ?"*/, 
+				new String[] { event.getName()/*, event.getStartTime().toString()*/ });
 	}
 
 	// Deleting single event

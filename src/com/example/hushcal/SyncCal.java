@@ -49,7 +49,7 @@ public class SyncCal extends Activity {
 		/**
 		 * generate spinner dropdown menu and populate with calendars from phone
 		 */
-		Spinner calendar_list = (Spinner)findViewById(R.id.calendar_list);
+		final Spinner calendar_list = (Spinner)findViewById(R.id.calendar_list);
 		calendar_list.setOnItemSelectedListener(spinner_listener);
 		cal_map = getCalendars();
 		ArrayList<String> selector_array = new ArrayList<String>();
@@ -100,7 +100,8 @@ public class SyncCal extends Activity {
 
 			return results_list;
 		} else {
-			//TODO: get calendars from google calendar api - for previous android versions (low priority, maybe save for update)
+			//TODO: get calendars from google calendar api - for previous android versions 
+			//		(higher priority now, should start working on this right after release)
 			return results_list;
 		}
 
@@ -135,7 +136,8 @@ public class SyncCal extends Activity {
 			Uri uri = Events.CONTENT_URI;
 			String selection = "((" + Events.CALENDAR_ID + " = ?) AND (" + Events.DTSTART + " >= ?))";
 			String [] selectionArgs = new String[] {calendarID, Calendar.getInstance().getTimeInMillis() + ""};
-			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
+			String sortOrder = Events.DTSTART + " ASC";
+			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, sortOrder);
 
 			while(cur.moveToNext()) {
 				String event_id = cur.getString(EVENT_ID_INDEX);
@@ -151,7 +153,8 @@ public class SyncCal extends Activity {
 				}
 			}
 		} else {
-			//TODO: get events from google calendar api - for previous android versions (low priority, maybe save for update)
+			//TODO: get events from google calendar api - for previous android versions 
+			//		(higher priority, should start working on this right after release)
 		}
 
 		return events;
@@ -177,7 +180,7 @@ public class SyncCal extends Activity {
 					Event updated_event = events_list.get(event_name); //new Event(event_id, event_name, null, null, status);
 					updated_event.setStatus(status);
 					//TODO: unschedule old event (might not have to do this because of PendingIntent.FLAG_UPDATE_CURRENT, need to test)
-					handler.updateEvent(updated_event);			
+					int updated = handler.updateEvent(updated_event);			
 					EventScheduler.schedule(app_context, updated_event);
 				}
 				//otherwise (if you change an event taken from the android calendar but is not in
