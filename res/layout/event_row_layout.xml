@@ -5,11 +5,14 @@
 
     <TextView
         android:id="@+id/event_text"
-        android:layout_weight=".70" />
+        android:layout_weight=".70"
+        android:background="#C9C9C9"
+        android:textColor="#FFFFFF" />
 
     <RadioGroup
         android:id="@+id/status_radio"
-        android:gravity="right" >
+        android:gravity="right"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/radioButton1"
@@ -19,11 +22,11 @@
 
         <RadioButton
             android:id="@+id/event_silence"
-            android:text="@string/silence" />
+            android:button="@drawable/silent" />
 
         <RadioButton
             android:id="@+id/event_vibrate"
-            android:text="@string/vibrate" />
+            android:button="@drawable/vibrate" />
     </RadioGroup>
 
 </TableRow>
