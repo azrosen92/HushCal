@@ -91,8 +91,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 				if(toast_list.isEmpty()) {					
 					insertIntoCalendar(beginTime, endTime, name.getText().toString());
-					int event_id = 1;//getEventIdFromCalendar(beginTime, endTime, name.getText().toString());
-					Event new_event = new Event(event_id, name.getText().toString(), beginTime, endTime, status);
+					Event new_event = new Event(name.getText().toString(), beginTime, endTime, status);
 					handler.addEvent(new_event);
 					EventScheduler.schedule(app_context, new_event);
 					

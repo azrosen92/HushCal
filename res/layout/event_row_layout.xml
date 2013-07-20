@@ -12,6 +12,12 @@
         android:gravity="right" >
 
         <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/event_sound" />
+
+        <RadioButton
             android:id="@+id/event_silence"
             android:text="@string/silence" />
 

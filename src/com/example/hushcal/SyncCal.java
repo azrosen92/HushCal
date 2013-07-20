@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -132,12 +133,11 @@ public class SyncCal extends Activity {
 			Cursor cur = null;
 			ContentResolver cr = getContentResolver();
 			Uri uri = Events.CONTENT_URI;
-			String selection = "((" + Events.CALENDAR_ID + " = ?))";
-			String [] selectionArgs = new String[] {calendarID};
+			String selection = "((" + Events.CALENDAR_ID + " = ?) AND (" + Events.DTSTART + " >= ?))";
+			String [] selectionArgs = new String[] {calendarID, Calendar.getInstance().getTimeInMillis() + ""};
 			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, null);
 
 			while(cur.moveToNext()) {
-				//TODO: getting null for event_id
 				String event_id = cur.getString(EVENT_ID_INDEX);
 				String event_title = cur.getString(EVENT_TITLE_INDEX);
 				Calendar event_start = Calendar.getInstance();
@@ -163,31 +163,34 @@ public class SyncCal extends Activity {
 		@Override
 		public void onCheckedChanged(RadioGroup group, int checkedId) {
 			RadioButton checkedRadioButton = (RadioButton) findViewById(checkedId);
-			String status = checkedRadioButton.getText().toString();
 
-			TableRow parent = (TableRow) group.getParent();
-			String event_name = ((TextView) parent.getChildAt(0)).getText().toString();
+			if (checkedRadioButton != null) {
+				String status = checkedRadioButton.getText().toString();
 
-			//If the event is already in hushcal database, then update its status
-			if (event_status_map.keySet().contains(event_name)) {
-				//get the id from the Event with name event_name
-				//int event_id = events_list.get(event_name).getId();
-				Event updated_event = events_list.get(event_name); //new Event(event_id, event_name, null, null, status);
-				updated_event.setStatus(status);
-				//TODO: unschedule old event (might not have to do this because of PendingIntent.FLAG_UPDATE_CURRENT, need to test)
-				handler.updateEvent(updated_event);			
-				EventScheduler.schedule(app_context, updated_event);
-			}
-			//otherwise (if you change an event taken from the android calendar but is not in
-			//hushcal database yet) add event to hushcal database with new status 
-			else {			
-				Event updated_event = events_list.get(event_name);
-				updated_event.setStatus(status);
-				handler.addEvent(updated_event);
-				EventScheduler.schedule(app_context, updated_event);
-			}
+				TableRow parent = (TableRow) group.getParent();
+				String event_name = ((TextView) parent.getChildAt(0)).getText().toString();
 
-		}		
+				//If the event is already in hushcal database, then update its status
+				if (event_status_map.keySet().contains(event_name)) {
+					//get the id from the Event with name event_name
+					//int event_id = events_list.get(event_name).getId();
+					Event updated_event = events_list.get(event_name); //new Event(event_id, event_name, null, null, status);
+					updated_event.setStatus(status);
+					//TODO: unschedule old event (might not have to do this because of PendingIntent.FLAG_UPDATE_CURRENT, need to test)
+					handler.updateEvent(updated_event);			
+					EventScheduler.schedule(app_context, updated_event);
+				}
+				//otherwise (if you change an event taken from the android calendar but is not in
+				//hushcal database yet) add event to hushcal database with new status 
+				else {			
+					Event updated_event = events_list.get(event_name);
+					updated_event.setStatus(status);
+					handler.addEvent(updated_event);
+					EventScheduler.schedule(app_context, updated_event);
+				}
+
+			}	
+		}
 
 	};
 
@@ -195,6 +198,15 @@ public class SyncCal extends Activity {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
+			
+			List<Event> tmp_events_list = handler.getAllEvents(); //turn this into event_status_map
+			event_status_map = new HashMap<String, String>();
+			for (Event event : tmp_events_list) {
+				String title = event.getName();
+				String status = event.getStatus();
+				event_status_map.put(title, status);
+			}
+			
 			String selected = parent.getItemAtPosition(pos).toString();
 			events_list = getCalendarEvents(selected);
 			TableLayout events_table = (TableLayout)findViewById(R.id.event_table);
@@ -214,13 +226,20 @@ public class SyncCal extends Activity {
 
 				//when you generate the table, populate it's radio buttons based on their
 				//status in database
+				String status;
 				try {
 					if (event_status_map.get(event).equalsIgnoreCase("vibrate")) {
 						events_list.get(event).setStatus("vibrate");
-						((RadioButton) status_group.getChildAt(1)).setChecked(true);
+						((RadioButton) status_group.getChildAt(2)).setChecked(true);
+						status = "vibrate";
 					} else if (event_status_map.get(event).equalsIgnoreCase("silence")) {
 						events_list.get(event).setStatus("silence");
+						((RadioButton) status_group.getChildAt(1)).setChecked(true);
+						status = "silence";
+					} else {
+						events_list.get(event).setStatus("sound");
 						((RadioButton) status_group.getChildAt(0)).setChecked(true);
+						status = "sound";
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

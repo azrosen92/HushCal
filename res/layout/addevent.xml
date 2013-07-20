@@ -100,7 +100,7 @@
         android:layout_marginTop="32dp"
         android:layout_toLeftOf="@+id/set_end"
         android:baselineAligned="false"
-        android:checkedButton="@id/vibrate"
+        android:checkedButton="@+id/vibrate"
         android:gravity="center"
         android:orientation="horizontal" >
 
