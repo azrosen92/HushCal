@@ -87,10 +87,8 @@
         android:id="@+id/submit_event_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/radioGroup1"
-        android:layout_marginTop="65dp"
+        android:layout_centerHorizontal="true"
         android:background="#F1F1F1"
         android:contentDescription="@string/done"
         android:src="@drawable/done" />
@@ -99,10 +97,9 @@
         android:id="@+id/radioGroup1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
         android:layout_below="@+id/end_time_label"
-        android:layout_marginTop="32dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
         android:baselineAligned="false"
         android:checkedButton="@+id/vibrate"
         android:gravity="center"
@@ -121,7 +118,6 @@
             android:layout_height="fill_parent"
             android:button="@drawable/silent"
             android:minWidth="50dp" />
-
     </RadioGroup>
 
 </RelativeLayout>
