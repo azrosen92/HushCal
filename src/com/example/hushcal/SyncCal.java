@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,18 +14,17 @@ import android.os.Bundle;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class SyncCal extends Activity {
 
@@ -168,9 +166,15 @@ public class SyncCal extends Activity {
 			RadioButton checkedRadioButton = (RadioButton) findViewById(checkedId);
 
 			if (checkedRadioButton != null) {
-				String status = checkedRadioButton.getText().toString();
+				String status = "";
+				
+				switch(checkedRadioButton.getId()) {
+				case R.id.event_sound: status = "sound"; break;
+				case R.id.event_silence: status = "silence"; break;
+				case R.id.event_vibrate: status = "vibrate"; break;
+				}
 
-				TableRow parent = (TableRow) group.getParent();
+				RelativeLayout parent = (RelativeLayout) group.getParent();
 				String event_name = ((TextView) parent.getChildAt(0)).getText().toString();
 
 				//If the event is already in hushcal database, then update its status

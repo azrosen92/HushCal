@@ -14,13 +14,13 @@
         android:background="@color/blue"
         android:contentDescription="@string/logo"
         android:src="@drawable/logo" />
+
     <Spinner
         android:id="@+id/calendar_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="36dp" />
+        android:layout_below="@+id/imageView1" />
 
     <ScrollView
         android:id="@+id/event_list_scroll"

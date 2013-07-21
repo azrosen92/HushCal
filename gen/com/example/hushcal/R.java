@@ -24,11 +24,14 @@ public final class R {
         public static final int silent=0x7f020007;
         public static final int silent_checked=0x7f020008;
         public static final int silent_unchecked=0x7f020009;
-        public static final int toggle_status=0x7f02000a;
-        public static final int toggle_status_on=0x7f02000b;
-        public static final int vibrate=0x7f02000c;
-        public static final int vibrate_checked=0x7f02000d;
-        public static final int vibrate_unchecked=0x7f02000e;
+        public static final int sound=0x7f02000a;
+        public static final int sound_checked=0x7f02000b;
+        public static final int sound_unchecked=0x7f02000c;
+        public static final int toggle_status=0x7f02000d;
+        public static final int toggle_status_on=0x7f02000e;
+        public static final int vibrate=0x7f02000f;
+        public static final int vibrate_checked=0x7f020010;
+        public static final int vibrate_unchecked=0x7f020011;
     }
     public static final class id {
         public static final int button1=0x7f080001;
@@ -38,12 +41,12 @@ public final class R {
         public static final int end_time_label=0x7f080003;
         public static final int event_list_scroll=0x7f080013;
         public static final int event_silence=0x7f08000f;
+        public static final int event_sound=0x7f08000e;
         public static final int event_table=0x7f080014;
         public static final int event_text=0x7f08000c;
         public static final int event_vibrate=0x7f080010;
         public static final int imageView1=0x7f080000;
         public static final int menu_settings=0x7f080015;
-        public static final int radioButton1=0x7f08000e;
         public static final int radioGroup1=0x7f080009;
         public static final int set_end=0x7f080004;
         public static final int set_start=0x7f080006;

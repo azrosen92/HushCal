@@ -15,6 +15,8 @@
             android:background="#C9C9C9"
             android:minHeight="30dp"
             android:text="@string/sample_event"
+            android:gravity="center_vertical"
+            android:paddingLeft="2pt"
             android:textColor="#FFFFFF" />
 
         <RadioGroup
@@ -29,13 +31,15 @@
             android:orientation="horizontal" >
 
             <RadioButton
-                android:id="@+id/radioButton1"
+                android:id="@+id/event_sound"
+                style="@drawable/sound"
                 android:layout_height="wrap_content"
-                android:minWidth="60dp"
-                android:text="@string/event_sound" />
+                android:button="@drawable/sound"
+                android:minWidth="60dp" />
 
             <RadioButton
                 android:id="@+id/event_silence"
+                style="@style/AppBaseTheme"
                 android:layout_height="wrap_content"
                 android:button="@drawable/silent"
                 android:minWidth="60dp" />
