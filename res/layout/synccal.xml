@@ -25,6 +25,44 @@
             android:id="@+id/event_table"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
+
+            <!-- Sample row of data for design on emulator
+            	COMMENT OUT WHEN DONE -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <TextView
+                    android:id="@+id/event_text"
+                    android:layout_weight=".70"
+                    android:background="#C9C9C9"
+                    android:textColor="#FFFFFF" />
+
+                <RadioGroup
+                    android:id="@+id/status_radio"
+                    android:gravity="right"
+                    android:minWidth="150dp"
+                    android:orientation="horizontal" >
+
+                    <RadioButton
+                        android:id="@+id/radioButton1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="50dp"
+                        android:text="@string/event_sound" />
+
+                    <RadioButton
+                        android:id="@+id/event_silence"
+                        android:button="@drawable/silent"
+                        android:minWidth="50dp" />
+
+                    <RadioButton
+                        android:id="@+id/event_vibrate"
+                        android:button="@drawable/vibrate"
+                        android:minWidth="50dp" />
+                </RadioGroup>
+            </TableRow>
+            <!-- END OF SAMPLE ROW -->
         </TableLayout>
     </ScrollView>
 
