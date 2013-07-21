@@ -36,6 +36,7 @@
                     android:id="@+id/event_text"
                     android:layout_weight=".70"
                     android:background="#C9C9C9"
+                    android:text="@string/sample_event"
                     android:textColor="#FFFFFF" />
 
                 <RadioGroup
