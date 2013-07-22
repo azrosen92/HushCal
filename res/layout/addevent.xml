@@ -18,6 +18,8 @@
         android:text="@string/end_time"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
+        android:paddingLeft="4pt"
+        android:paddingTop="3pt"
         android:width="150dp" />
 
     <TextView
@@ -32,6 +34,8 @@
         android:text="@string/start_time"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#FFFFFF"
+        android:paddingLeft="4pt"
+        android:paddingTop="3pt"
         android:width="150dp" />
 
     <ImageView
