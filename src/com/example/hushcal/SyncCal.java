@@ -222,7 +222,8 @@ public class SyncCal extends Activity {
 				//make row in table including event name and silence/vibrate radio button
 				//and maybe a pop up that shows more info about event, such as start and
 				//end time.
-				TableRow tr = (TableRow)getLayoutInflater().inflate(R.layout.event_row_layout, null);
+				TableRow tr_container = (TableRow)getLayoutInflater().inflate(R.layout.event_row_layout, null);
+				RelativeLayout tr = (RelativeLayout)tr_container.getChildAt(0);
 
 				TextView text = (TextView) tr.getChildAt(0);
 				text.setText(event);
