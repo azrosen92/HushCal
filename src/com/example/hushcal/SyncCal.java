@@ -227,7 +227,7 @@ public class SyncCal extends Activity {
 
 				TextView text = (TextView) tr.getChildAt(0);
 				text.setText(event);
-				events_table.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
+				events_table.addView(tr_container, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
 						TableLayout.LayoutParams.WRAP_CONTENT));
 
 				RadioGroup status_group = (RadioGroup) tr.getChildAt(1);
