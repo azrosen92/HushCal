@@ -6,7 +6,8 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent" 
+        android:layout_marginBottom="4pt">
 
         <TextView
             android:id="@+id/event_text"
@@ -16,7 +17,7 @@
             android:minHeight="30dp"
             android:text="@string/sample_event"
             android:gravity="center_vertical"
-            android:paddingLeft="2pt"
+            android:paddingLeft="4pt"
             android:textColor="#FFFFFF" />
 
         <RadioGroup
