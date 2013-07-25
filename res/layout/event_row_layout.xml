@@ -5,13 +5,13 @@
     android:minHeight="100dp" >
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
         android:layout_marginBottom="4pt">
 
         <TextView
             android:id="@+id/event_text"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#C9C9C9"
             android:minHeight="30dp"
@@ -22,7 +22,7 @@
 
         <RadioGroup
             android:id="@+id/status_radio"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
