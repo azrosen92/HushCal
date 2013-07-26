@@ -56,7 +56,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		final Calendar beginTime = Calendar.getInstance();
 		final Calendar endTime = Calendar.getInstance();
 
-		final EditText name = (EditText)findViewById(R.id.editText1);
+		final EditText name = (EditText)findViewById(R.id.edit_event_name);
 
 		final RadioButton vibrate = (RadioButton)findViewById(R.id.vibrate);
 		final RadioButton silence = (RadioButton)findViewById(R.id.silence);

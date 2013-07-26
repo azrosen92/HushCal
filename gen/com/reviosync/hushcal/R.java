@@ -12,6 +12,7 @@ public final class R {
     }
     public static final class color {
         public static final int blue=0x7f040000;
+        public static final int white=0x7f040001;
     }
     public static final class drawable {
         public static final int add_event=0x7f020000;
@@ -36,26 +37,28 @@ public final class R {
     public static final class id {
         public static final int button1=0x7f080001;
         public static final int button2=0x7f080002;
-        public static final int calendar_list=0x7f080012;
-        public static final int editText1=0x7f080007;
-        public static final int end_time_label=0x7f080003;
-        public static final int event_list_scroll=0x7f080013;
-        public static final int event_silence=0x7f08000f;
-        public static final int event_sound=0x7f08000e;
-        public static final int event_table=0x7f080014;
-        public static final int event_text=0x7f08000c;
-        public static final int event_vibrate=0x7f080010;
-        public static final int imageView1=0x7f080000;
-        public static final int menu_settings=0x7f080015;
-        public static final int radioGroup1=0x7f080009;
-        public static final int set_end=0x7f080004;
+        public static final int calendar_list=0x7f080014;
+        public static final int edit_event_name=0x7f080003;
+        public static final int end_time_label=0x7f080008;
+        public static final int event_list_scroll=0x7f080015;
+        public static final int event_silence=0x7f080011;
+        public static final int event_sound=0x7f080010;
+        public static final int event_table=0x7f080016;
+        public static final int event_text=0x7f08000e;
+        public static final int event_vibrate=0x7f080012;
+        public static final int hush_cal_logo=0x7f080000;
+        public static final int linearLayout1=0x7f080004;
+        public static final int linearLayout2=0x7f080007;
+        public static final int menu_settings=0x7f080017;
+        public static final int radioGroup1=0x7f08000a;
+        public static final int set_end=0x7f080009;
         public static final int set_start=0x7f080006;
-        public static final int silence=0x7f08000b;
-        public static final int start_time_button=0x7f080011;
+        public static final int silence=0x7f08000c;
+        public static final int start_time_button=0x7f080013;
         public static final int start_time_label=0x7f080005;
-        public static final int status_radio=0x7f08000d;
-        public static final int submit_event_button=0x7f080008;
-        public static final int vibrate=0x7f08000a;
+        public static final int status_radio=0x7f08000f;
+        public static final int submit_event_button=0x7f08000d;
+        public static final int vibrate=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
