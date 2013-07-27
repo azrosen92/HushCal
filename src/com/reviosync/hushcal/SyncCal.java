@@ -66,7 +66,7 @@ public class SyncCal extends Activity {
 				new ArrayAdapter<String>(getApplicationContext(), 
 						android.R.layout.simple_spinner_item, 
 						selector_array);
-		spinner_array.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner_array.setDropDownViewResource(R.layout.custom_dropdown_item);
 		calendar_list.setAdapter(spinner_array);
 
 	}
