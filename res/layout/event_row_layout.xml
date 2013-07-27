@@ -1,56 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:minHeight="100dp" >
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    android:minHeight="100dp"
+    android:orientation="vertical" >
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/event_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" 
-        android:layout_marginBottom="4pt">
+        android:layout_height="wrap_content"
+        android:background="#C9C9C9"
+        android:gravity="center_vertical"
+        android:minHeight="30dp"
+        android:paddingBottom="4pt"
+        android:paddingLeft="4pt"
+        android:paddingTop="4pt"
+        android:text="@string/sample_event"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/event_text"
-            android:layout_width="match_parent"
+    <RadioGroup
+        android:id="@+id/status_radio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:minHeight="60dp"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/event_sound"
+            style="@drawable/sound"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="#C9C9C9"
-            android:minHeight="30dp"
-            android:text="@string/sample_event"
-            android:gravity="center_vertical"
-            android:paddingLeft="4pt"
-            android:textColor="#FFFFFF" />
+            android:layout_weight=".33"
+            android:button="@drawable/sound"
+            android:gravity="center"
+            android:minWidth="60dp" />
 
-        <RadioGroup
-            android:id="@+id/status_radio"
-            android:layout_width="match_parent"
+        <RadioButton
+            android:id="@+id/event_silence"
+            style="@style/AppBaseTheme"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/event_text"
-            android:gravity="center_horizontal"
-            android:minHeight="60dp"
-            android:orientation="horizontal" >
+            android:layout_weight=".33"
+            android:button="@drawable/silent"
+            android:gravity="center"
+            android:minWidth="60dp" />
 
-            <RadioButton
-                android:id="@+id/event_sound"
-                style="@drawable/sound"
-                android:layout_height="wrap_content"
-                android:button="@drawable/sound"
-                android:minWidth="60dp" />
+        <RadioButton
+            android:id="@+id/event_vibrate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".33"
+            android:button="@drawable/vibrate"
+            android:gravity="center"
+            android:minWidth="60dp" />
+    </RadioGroup>
 
-            <RadioButton
-                android:id="@+id/event_silence"
-                style="@style/AppBaseTheme"
-                android:layout_height="wrap_content"
-                android:button="@drawable/silent"
-                android:minWidth="60dp" />
-
-            <RadioButton
-                android:id="@+id/event_vibrate"
-                android:layout_height="wrap_content"
-                android:button="@drawable/vibrate"
-                android:minWidth="60dp" />
-        </RadioGroup>
-    </RelativeLayout>
-
-</TableRow>
+</LinearLayout>

@@ -17,10 +17,10 @@
 
     <Spinner
         android:id="@+id/calendar_list"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/hush_cal_logo" />
+        android:layout_below="@+id/hush_cal_logo"
+        android:gravity="fill_horizontal|center" />
 
     <ScrollView
         android:id="@+id/event_list_scroll"
@@ -29,14 +29,17 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/calendar_list" >
+        android:layout_below="@+id/calendar_list"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp" >
 
-        <TableLayout
+        <LinearLayout
             android:id="@+id/event_table"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-        </TableLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical" >
+        </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>

@@ -19,13 +19,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 public class SyncCal extends Activity {
@@ -176,7 +175,7 @@ public class SyncCal extends Activity {
 				case R.id.event_vibrate: status = "vibrate"; break;
 				}
 
-				RelativeLayout parent = (RelativeLayout) group.getParent();
+				LinearLayout parent = (LinearLayout) group.getParent();
 				String event_name = ((TextView) parent.getChildAt(0)).getText().toString();
 
 				//If the event is already in hushcal database, then update its status
@@ -218,19 +217,17 @@ public class SyncCal extends Activity {
 			
 			String selected = parent.getItemAtPosition(pos).toString();
 			events_list = getCalendarEvents(selected);
-			TableLayout events_table = (TableLayout)findViewById(R.id.event_table);
+			LinearLayout events_table = (LinearLayout)findViewById(R.id.event_table);
 			events_table.removeAllViews();
 			for (String event : events_list.keySet()) {
 				//make row in table including event name and silence/vibrate radio button
 				//and maybe a pop up that shows more info about event, such as start and
 				//end time.
-				TableRow tr_container = (TableRow)getLayoutInflater().inflate(R.layout.event_row_layout, null);
-				RelativeLayout tr = (RelativeLayout)tr_container.getChildAt(0);
+				LinearLayout tr = (LinearLayout)getLayoutInflater().inflate(R.layout.event_row_layout, null);
 
 				TextView text = (TextView) tr.getChildAt(0);
 				text.setText(event);
-				events_table.addView(tr_container, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-						TableLayout.LayoutParams.WRAP_CONTENT));
+				events_table.addView(tr);
 
 				RadioGroup status_group = (RadioGroup) tr.getChildAt(1);
 
