@@ -15,3 +15,15 @@ TODO
   + this will allow the app to work on older devices and sync with ALL calendars, it currently only syncs with calendars that are stored on the phone
 * do some testing to make sure that silencing an event is unscheduled when the status is changed
 * make sure data is persistent when updated in app store
+
+Release Calendar
+================
+* v 1.01
+  + new logo at the top of app
+  + make fonts the same throughout the app
+  + fix 'set' buttons on add event page
+  + general ui fixes
+* v 1.1
+  + new styling for dropdown menu
+* v 1.2
+  + redesign date/time picker
