@@ -11,7 +11,7 @@
     android:ellipsize="marquee"
     android:textAlignment="inherit"
     android:textColor="@color/white"
-    android:background="#C9C9C9" >
+    android:background="@color/blue" >
     
 
 </CheckedTextView>
