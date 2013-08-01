@@ -48,16 +48,16 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" />
 
-        <ImageButton
+        <Button
             android:id="@+id/set_start"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="0dp"
             android:layout_weight=".15"
-            android:background="#C1C1C1"
-            android:contentDescription="@string/set"
-            android:src="@drawable/set" />
+            android:layout_margin="0dp"
+            android:text="@string/set"
+            android:textColor="@color/white"
+            android:background="@drawable/set_button_shape" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,16 +83,15 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" />
 
-        <ImageButton
+        <Button
             android:id="@+id/set_end"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="0dp"
             android:layout_weight=".15"
-            android:background="#C1C1C1"
-            android:contentDescription="@string/set"
-            android:src="@drawable/set" />
+            android:text="@string/set"
+            android:textColor="@color/white"
+            android:background="@drawable/set_button_shape" />
     </LinearLayout>
 
     <RadioGroup

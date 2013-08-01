@@ -167,10 +167,10 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		 */
 		custom.setDate(Calendar.getInstance());
 
-		ImageButton start_time_button = (ImageButton)findViewById(R.id.set_start);
+		Button start_time_button = (Button)findViewById(R.id.set_start);
 		start_time_button.setOnClickListener(this);
 
-		ImageButton end_time_button = (ImageButton)findViewById(R.id.set_end);
+		Button end_time_button = (Button)findViewById(R.id.set_end);
 		end_time_button.setOnClickListener(this);
 
 		//check to see if start date and time have been set for error handler
