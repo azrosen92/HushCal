@@ -2,6 +2,7 @@ package com.reviosync.hushcal;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.reviosync.hushcal.R;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -51,8 +54,13 @@ public class SyncCal extends Activity {
 		final Spinner calendar_list = (Spinner)findViewById(R.id.calendar_list);
 		calendar_list.setOnItemSelectedListener(spinner_listener);
 		cal_map = getCalendars();
-		ArrayList<String> selector_array = new ArrayList<String>();
-		selector_array.addAll(cal_map.keySet());
+		ArrayList<String> selector_array = new ArrayList<String>();	
+		Collection<String> calendars = cal_map.keySet();
+		if (calendars.contains(null)) {
+			selector_array.add("No calendars");
+		} else {
+			selector_array.addAll(calendars);
+		}
 
 		List<Event> events_list = handler.getAllEvents(); //turn this into event_status_map
 		event_status_map = new HashMap<String, String>();
@@ -62,12 +70,18 @@ public class SyncCal extends Activity {
 			event_status_map.put(title, status);
 		}
 
-		ArrayAdapter<String> spinner_array = 
-				new ArrayAdapter<String>(getApplicationContext(), 
-						android.R.layout.simple_spinner_item, 
-						selector_array);
-		spinner_array.setDropDownViewResource(R.layout.custom_dropdown_item);
-		calendar_list.setAdapter(spinner_array);
+		try {
+			ArrayAdapter<String> spinner_array = 
+					new ArrayAdapter<String>(getApplicationContext(), 
+							android.R.layout.simple_spinner_item, 
+							selector_array);
+			spinner_array.setDropDownViewResource(R.layout.custom_dropdown_item);
+			calendar_list.setAdapter(spinner_array);
+		} catch(NullPointerException e) {
+			Intent home_page = new Intent(app_context, MainActivity.class);
+			startActivity(home_page);
+			Toast.makeText(app_context, "No calendars available", Toast.LENGTH_SHORT).show();
+		}
 
 	}
 
@@ -168,7 +182,7 @@ public class SyncCal extends Activity {
 
 			if (checkedRadioButton != null) {
 				String status = "";
-				
+
 				switch(checkedRadioButton.getId()) {
 				case R.id.event_sound: status = "sound"; break;
 				case R.id.event_silence: status = "silence"; break;
@@ -206,7 +220,7 @@ public class SyncCal extends Activity {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
-			
+
 			List<Event> tmp_events_list = handler.getAllEvents(); //turn this into event_status_map
 			event_status_map = new HashMap<String, String>();
 			for (Event event : tmp_events_list) {
@@ -214,7 +228,7 @@ public class SyncCal extends Activity {
 				String status = event.getStatus();
 				event_status_map.put(title, status);
 			}
-			
+
 			String selected = parent.getItemAtPosition(pos).toString();
 			events_list = getCalendarEvents(selected);
 			LinearLayout events_table = (LinearLayout)findViewById(R.id.event_table);

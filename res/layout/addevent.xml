@@ -23,7 +23,8 @@
         android:gravity="center"
         android:inputType="textPersonName"
         android:text="@string/new_event"
-        android:textColor="#FFFFFF" />
+        android:textColor="#FFFFFF"
+        android:textSize="40sp" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -41,12 +42,13 @@
             android:layout_height="match_parent"
             android:layout_weight=".85"
             android:background="#C1C1C1"
-            android:paddingBottom="3pt"
-            android:paddingLeft="3pt"
-            android:paddingTop="3pt"
+            android:paddingBottom="5pt"
+            android:paddingLeft="5pt"
+            android:paddingTop="5pt"
             android:text="@string/start_time"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/set_start"
@@ -76,12 +78,13 @@
             android:layout_height="match_parent"
             android:layout_weight=".85"
             android:background="#C1C1C1"
-            android:paddingBottom="3pt"
-            android:paddingLeft="3pt"
-            android:paddingTop="3pt"
+            android:paddingBottom="5pt"
+            android:paddingLeft="5pt"
+            android:paddingTop="5pt"
             android:text="@string/end_time"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/set_end"
@@ -130,7 +133,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/radioGroup1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="25dp"
         android:background="#F1F1F1"
         android:contentDescription="@string/done"
         android:src="@drawable/done" />
