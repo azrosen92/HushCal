@@ -9,7 +9,6 @@
     android:paddingBottom="15dp"
     android:paddingLeft="8dp"
     android:ellipsize="marquee"
-    android:textAlignment="inherit"
     android:textColor="@color/white"
     android:background="@color/blue" >
     
