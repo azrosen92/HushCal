@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 public class SyncCal extends Activity {
 
-	private static HashMap<String, Long> cal_map;
+	private static ArrayList<String> calendars;
 	private static EventTableHandler handler;
 	private static HashMap<String, Event> events_list; //list of events constructed from data taken from android calendar
 	private static HashMap<String, String> event_status_map; //list of event names and statuses taken from hushcal database
@@ -55,36 +55,22 @@ public class SyncCal extends Activity {
 		 */
 		final Spinner calendar_list = (Spinner)findViewById(R.id.calendar_list);
 		calendar_list.setOnItemSelectedListener(spinner_listener);
-		cal_map = getCalendars();
-		ArrayList<String> selector_array = new ArrayList<String>();	
-		Collection<String> calendars = cal_map.keySet();
-		if (calendars.contains(null)) {
-			selector_array.add("No calendars");
-		} else {
-			selector_array.addAll(calendars);
-		}
+		calendars = getCalendarsOnPhone();
 
-		List<Event> events_list = handler.getAllEvents(); //turn this into event_status_map
-		event_status_map = new HashMap<String, String>();
-		for (Event event : events_list) {
-			String title = event.getName();
-			String status = event.getStatus();
-			event_status_map.put(title, status);
-		}
+//		List<Event> events_list = handler.getAllEvents(); //turn this into event_status_map
+//		event_status_map = new HashMap<String, String>();
+//		for (Event event : events_list) {
+//			String title = event.getName();
+//			String status = event.getStatus();
+//			event_status_map.put(title, status);
+//		}
 
-		try {
-			ArrayAdapter<String> spinner_array = 
-					new ArrayAdapter<String>(getApplicationContext(), 
-							android.R.layout.simple_spinner_item, 
-							selector_array);
-			spinner_array.setDropDownViewResource(R.layout.custom_dropdown_item);
-			calendar_list.setAdapter(spinner_array);
-		} catch(NullPointerException e) {
-			Intent home_page = new Intent(app_context, MainActivity.class);
-			startActivity(home_page);
-			Toast.makeText(app_context, "No calendars available", Toast.LENGTH_SHORT).show();
-		}
-
+		ArrayAdapter<String> spinner_array = 
+				new ArrayAdapter<String>(getApplicationContext(), 
+						android.R.layout.simple_spinner_item, 
+						calendars);
+		spinner_array.setDropDownViewResource(R.layout.custom_dropdown_item);
+		calendar_list.setAdapter(spinner_array);
 	}
 
 	// The indices for the projection array above.
@@ -117,7 +103,7 @@ public class SyncCal extends Activity {
 		} else {
 			AccountManager acctmgr = AccountManager.get(app_context);
 			Account[] accounts = acctmgr.getAccountsByType("com.google");
-			
+
 			for (Account account : accounts) {
 				String key = account.name;
 				long value = 0L;
@@ -129,18 +115,18 @@ public class SyncCal extends Activity {
 		}
 
 	}
-	
+
 	private ArrayList<String> getCalendarsOnPhone() {
 		ArrayList<String> calendars = new ArrayList<String>();
-		
+
 		AccountManager acctmgr = AccountManager.get(app_context);
 		Account[] accounts = acctmgr.getAccountsByType("com.google");
-		
+
 		for (Account account : accounts) {
 			String key = account.name;
 			calendars.add(key);
 		}
-		
+
 		return calendars;
 	}
 
@@ -161,42 +147,42 @@ public class SyncCal extends Activity {
 	private static final int EVENT_END_INDEX = 3;
 
 	//returns an arraylist of events constructed from data queried from the android calendar
-	private HashMap<String, Event> getCalendarEvents(String calendar_name) 
-	{
-		HashMap<String, Event> events = new HashMap<String, Event>();
-
-		String calendarID = cal_map.get(calendar_name).toString();
-
-		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
-			Cursor cur = null;
-			ContentResolver cr = getContentResolver();
-			Uri uri = Events.CONTENT_URI;
-			String selection = "((" + Events.CALENDAR_ID + " = ?) AND (" + Events.DTSTART + " >= ?))";
-			String [] selectionArgs = new String[] {calendarID, Calendar.getInstance().getTimeInMillis() + ""};
-			String sortOrder = Events.DTSTART + " ASC";
-			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, sortOrder);
-
-			while(cur.moveToNext()) {
-				String event_id = cur.getString(EVENT_ID_INDEX);
-				String event_title = cur.getString(EVENT_TITLE_INDEX);
-				Calendar event_start = Calendar.getInstance();
-				event_start.setTimeInMillis(cur.getLong(EVENT_START_INDEX));
-				Calendar event_end = Calendar.getInstance();
-				event_end.setTimeInMillis(cur.getLong(EVENT_END_INDEX));
-
-				Event event = new Event(Integer.parseInt(event_id), event_title, event_start, event_end, null);
-				if (event != null) {
-					events.put(event_title, event);
-				}
-			}
-		} else {
-			//TODO: get events from google calendar api - for previous android versions 
-			//		(higher priority, should start working on this right after release)
-		}
-
-		return events;
-
-	}
+//	private HashMap<String, Event> getCalendarEvents(String calendar_name) 
+//	{
+//		HashMap<String, Event> events = new HashMap<String, Event>();
+//
+//		String calendarID = cal_map.get(calendar_name).toString();
+//
+//		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
+//			Cursor cur = null;
+//			ContentResolver cr = getContentResolver();
+//			Uri uri = Events.CONTENT_URI;
+//			String selection = "((" + Events.CALENDAR_ID + " = ?) AND (" + Events.DTSTART + " >= ?))";
+//			String [] selectionArgs = new String[] {calendarID, Calendar.getInstance().getTimeInMillis() + ""};
+//			String sortOrder = Events.DTSTART + " ASC";
+//			cur = cr.query(uri, EVENT_PROJECTION, selection, selectionArgs, sortOrder);
+//
+//			while(cur.moveToNext()) {
+//				String event_id = cur.getString(EVENT_ID_INDEX);
+//				String event_title = cur.getString(EVENT_TITLE_INDEX);
+//				Calendar event_start = Calendar.getInstance();
+//				event_start.setTimeInMillis(cur.getLong(EVENT_START_INDEX));
+//				Calendar event_end = Calendar.getInstance();
+//				event_end.setTimeInMillis(cur.getLong(EVENT_END_INDEX));
+//
+//				Event event = new Event(Integer.parseInt(event_id), event_title, event_start, event_end, null);
+//				if (event != null) {
+//					events.put(event_title, event);
+//				}
+//			}
+//		} else {
+//			//TODO: get events from google calendar api - for previous android versions 
+//			//		(higher priority, should start working on this right after release)
+//		}
+//
+//		return events;
+//
+//	}
 
 	OnCheckedChangeListener event_status_listener = new OnCheckedChangeListener() {
 
@@ -244,58 +230,58 @@ public class SyncCal extends Activity {
 		@Override
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
-
-			List<Event> tmp_events_list = handler.getAllEvents(); //turn this into event_status_map
-			event_status_map = new HashMap<String, String>();
-			for (Event event : tmp_events_list) {
-				String title = event.getName();
-				String status = event.getStatus();
-				event_status_map.put(title, status);
-			}
-
-			String selected = parent.getItemAtPosition(pos).toString();
-			events_list = getCalendarEvents(selected);
-			LinearLayout events_table = (LinearLayout)findViewById(R.id.event_table);
-			events_table.removeAllViews();
-			for (String event : events_list.keySet()) {
-				//make row in table including event name and silence/vibrate radio button
-				//and maybe a pop up that shows more info about event, such as start and
-				//end time.
-				LinearLayout tr = (LinearLayout)getLayoutInflater().inflate(R.layout.event_row_layout, null);
-
-				TextView text = (TextView) tr.getChildAt(0);
-				text.setText(event);
-				events_table.addView(tr);
-
-				RadioGroup status_group = (RadioGroup) tr.getChildAt(1);
-
-				//when you generate the table, populate it's radio buttons based on their
-				//status in database
-				String status;
-				try {
-					if (event_status_map.get(event).equalsIgnoreCase("vibrate")) {
-						events_list.get(event).setStatus("vibrate");
-						((RadioButton) status_group.getChildAt(2)).setChecked(true);
-						status = "vibrate";
-					} else if (event_status_map.get(event).equalsIgnoreCase("silence")) {
-						events_list.get(event).setStatus("silence");
-						((RadioButton) status_group.getChildAt(1)).setChecked(true);
-						status = "silence";
-					} else {
-						events_list.get(event).setStatus("sound");
-						((RadioButton) status_group.getChildAt(0)).setChecked(true);
-						status = "sound";
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-				// query Events database each time a radio button is pressed to
-				// update its silence/vibrate status
-				status_group.setOnCheckedChangeListener(event_status_listener);
-
-
-			}
+//
+//			List<Event> tmp_events_list = handler.getAllEvents(); //turn this into event_status_map
+//			event_status_map = new HashMap<String, String>();
+//			for (Event event : tmp_events_list) {
+//				String title = event.getName();
+//				String status = event.getStatus();
+//				event_status_map.put(title, status);
+//			}
+//
+//			String selected = parent.getItemAtPosition(pos).toString();
+//			events_list = getCalendarEvents(selected);
+//			LinearLayout events_table = (LinearLayout)findViewById(R.id.event_table);
+//			events_table.removeAllViews();
+//			for (String event : events_list.keySet()) {
+//				//make row in table including event name and silence/vibrate radio button
+//				//and maybe a pop up that shows more info about event, such as start and
+//				//end time.
+//				LinearLayout tr = (LinearLayout)getLayoutInflater().inflate(R.layout.event_row_layout, null);
+//
+//				TextView text = (TextView) tr.getChildAt(0);
+//				text.setText(event);
+//				events_table.addView(tr);
+//
+//				RadioGroup status_group = (RadioGroup) tr.getChildAt(1);
+//
+//				//when you generate the table, populate it's radio buttons based on their
+//				//status in database
+//				String status;
+//				try {
+//					if (event_status_map.get(event).equalsIgnoreCase("vibrate")) {
+//						events_list.get(event).setStatus("vibrate");
+//						((RadioButton) status_group.getChildAt(2)).setChecked(true);
+//						status = "vibrate";
+//					} else if (event_status_map.get(event).equalsIgnoreCase("silence")) {
+//						events_list.get(event).setStatus("silence");
+//						((RadioButton) status_group.getChildAt(1)).setChecked(true);
+//						status = "silence";
+//					} else {
+//						events_list.get(event).setStatus("sound");
+//						((RadioButton) status_group.getChildAt(0)).setChecked(true);
+//						status = "sound";
+//					}
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//
+//				// query Events database each time a radio button is pressed to
+//				// update its silence/vibrate status
+//				status_group.setOnCheckedChangeListener(event_status_listener);
+//
+//
+//			}
 		}
 
 
