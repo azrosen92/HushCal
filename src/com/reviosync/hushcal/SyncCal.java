@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.reviosync.hushcal.R;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -113,11 +115,33 @@ public class SyncCal extends Activity {
 
 			return results_list;
 		} else {
+			AccountManager acctmgr = AccountManager.get(app_context);
+			Account[] accounts = acctmgr.getAccountsByType("com.google");
+			
+			for (Account account : accounts) {
+				String key = account.name;
+				long value = 0L;
+				results_list.put(key, value);
+			}
 			//TODO: get calendars from google calendar api - for previous android versions 
 			//		(higher priority now, should start working on this right after release)
 			return results_list;
 		}
 
+	}
+	
+	private ArrayList<String> getCalendarsOnPhone() {
+		ArrayList<String> calendars = new ArrayList<String>();
+		
+		AccountManager acctmgr = AccountManager.get(app_context);
+		Account[] accounts = acctmgr.getAccountsByType("com.google");
+		
+		for (Account account : accounts) {
+			String key = account.name;
+			calendars.add(key);
+		}
+		
+		return calendars;
 	}
 
 
