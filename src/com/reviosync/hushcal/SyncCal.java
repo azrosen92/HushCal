@@ -13,6 +13,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract.Calendars;
@@ -56,31 +57,34 @@ public class SyncCal extends Activity {
 		cal_map = getCalendars();
 		ArrayList<String> selector_array = new ArrayList<String>();	
 		Collection<String> calendars = cal_map.keySet();
-		if (calendars.contains(null)) {
+		if (calendars.isEmpty()) {
 			selector_array.add("No calendars");
+			TextView error = new TextView(app_context);
+			error.setText("HushCal does not currently support any of your calendars, stay tuned for an update soon!");
+			error.setTextColor(Color.WHITE);
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, 
+					LinearLayout.LayoutParams.WRAP_CONTENT);
+			layoutParams.setMargins(20, 40, 20, 0);
+			LinearLayout view = (LinearLayout) findViewById(R.id.event_table);
+			view.addView(error, layoutParams);
 		} else {
 			selector_array.addAll(calendars);
-		}
 
-		List<Event> events_list = handler.getAllEvents(); //turn this into event_status_map
-		event_status_map = new HashMap<String, String>();
-		for (Event event : events_list) {
-			String title = event.getName();
-			String status = event.getStatus();
-			event_status_map.put(title, status);
-		}
+			List<Event> events_list = handler.getAllEvents(); //turn this into event_status_map
+			event_status_map = new HashMap<String, String>();
+			for (Event event : events_list) {
+				String title = event.getName();
+				String status = event.getStatus();
+				event_status_map.put(title, status);
+			}
 
-		try {
 			ArrayAdapter<String> spinner_array = 
 					new ArrayAdapter<String>(getApplicationContext(), 
 							android.R.layout.simple_spinner_item, 
 							selector_array);
 			spinner_array.setDropDownViewResource(R.layout.custom_dropdown_item);
 			calendar_list.setAdapter(spinner_array);
-		} catch(NullPointerException e) {
-			Intent home_page = new Intent(app_context, MainActivity.class);
-			startActivity(home_page);
-			Toast.makeText(app_context, "No calendars available", Toast.LENGTH_SHORT).show();
+
 		}
 
 	}
