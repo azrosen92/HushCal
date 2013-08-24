@@ -1,6 +1,7 @@
 package com.reviosync.hushcal;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import com.reviosync.hushcal.R;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.accounts.AccountManagerFuture;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -34,9 +36,10 @@ import android.widget.TextView;
 
 public class SyncCal extends Activity {
 
-	private static ArrayList<String> calendars;
+	//hashmap of account names and oauth keys
+	private static HashMap<String, String> accounts;
 	private static EventTableHandler handler;
-	private static HashMap<String, Event> events_list; //list of events constructed from data taken from android calendar
+	private static HashMap<String, HCEvent> events_list; //list of events constructed from data taken from android calendar
 	private static HashMap<String, String> event_status_map; //list of event names and statuses taken from hushcal database
 
 	static Context app_context;
@@ -55,15 +58,25 @@ public class SyncCal extends Activity {
 		 */
 		final Spinner calendar_list = (Spinner)findViewById(R.id.calendar_list);
 		calendar_list.setOnItemSelectedListener(spinner_listener);
-		calendars = getCalendarsOnPhone();
+		accounts = getAuthrizedCalendarsOnPhone();
+		ArrayList<String> calendars = new ArrayList<String>();
+		for (String account_name : accounts.keySet()) {
+			calendars.add(account_name);
+		}
 
-//		List<Event> events_list = handler.getAllEvents(); //turn this into event_status_map
-//		event_status_map = new HashMap<String, String>();
-//		for (Event event : events_list) {
-//			String title = event.getName();
-//			String status = event.getStatus();
-//			event_status_map.put(title, status);
-//		}
+		/*
+		 * Get all events from in-app database, with their statuses
+		 * 
+		 * This will be used for quickly changing the status when the
+		 * user clicks the status button on under the event
+		 */
+		List<HCEvent> events_list = handler.getAllEvents(); //turn this into event_status_map
+		event_status_map = new HashMap<String, String>();
+		for (HCEvent hCEvent : events_list) {
+			String title = hCEvent.getName();
+			String status = hCEvent.getStatus();
+			event_status_map.put(title, status);
+		}
 
 		ArrayAdapter<String> spinner_array = 
 				new ArrayAdapter<String>(getApplicationContext(), 
@@ -78,56 +91,77 @@ public class SyncCal extends Activity {
 	private static final int CALENDAR_DISPLAY_NAME_INDEX = 1;
 
 	//returns a hashmap of all available calendars and their ids
-	private HashMap<String, Long> getCalendars() {
+//	private HashMap<String, Long> getCalendars() {
+//
+//		HashMap<String, Long> results_list = new HashMap<String, Long>();
+//
+//		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
+//
+//			// Run query
+//			Cursor cur = null;
+//			ContentResolver cr = getContentResolver();
+//			Uri uri = Calendars.CONTENT_URI;
+//			// Submit the query and get a Cursor object back. 
+//			cur = cr.query(uri, null, null, null, null);
+//
+//			//get list of calendars from cursor object
+//			while(cur.moveToNext()) {
+//				long cal_id = cur.getLong(CALENDAR_ID_INDEX);
+//				String cal_display_name = cur.getString(CALENDAR_DISPLAY_NAME_INDEX);
+//
+//				results_list.put(cal_display_name, cal_id);
+//			}
+//
+//			return results_list;
+//		} else {
+//			AccountManager acctmgr = AccountManager.get(app_context);
+//			Account[] accounts = acctmgr.getAccountsByType("com.google");
+//
+//			for (Account account : accounts) {
+//				String key = account.name;
+//				long value = 0L;
+//				results_list.put(key, value);
+//			}
+//			//TODO: get calendars from google calendar api - for previous android versions 
+//			//		(higher priority now, should start working on this right after release)
+//			return results_list;
+//		}
+//
+//	}
 
-		HashMap<String, Long> results_list = new HashMap<String, Long>();
-
-		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
-
-			// Run query
-			Cursor cur = null;
-			ContentResolver cr = getContentResolver();
-			Uri uri = Calendars.CONTENT_URI;
-			// Submit the query and get a Cursor object back. 
-			cur = cr.query(uri, null, null, null, null);
-
-			//get list of calendars from cursor object
-			while(cur.moveToNext()) {
-				long cal_id = cur.getLong(CALENDAR_ID_INDEX);
-				String cal_display_name = cur.getString(CALENDAR_DISPLAY_NAME_INDEX);
-
-				results_list.put(cal_display_name, cal_id);
-			}
-
-			return results_list;
-		} else {
-			AccountManager acctmgr = AccountManager.get(app_context);
-			Account[] accounts = acctmgr.getAccountsByType("com.google");
-
-			for (Account account : accounts) {
-				String key = account.name;
-				long value = 0L;
-				results_list.put(key, value);
-			}
-			//TODO: get calendars from google calendar api - for previous android versions 
-			//		(higher priority now, should start working on this right after release)
-			return results_list;
-		}
-
-	}
-
-	private ArrayList<String> getCalendarsOnPhone() {
-		ArrayList<String> calendars = new ArrayList<String>();
+	private HashMap<String, String> getAuthrizedCalendarsOnPhone() {
+		HashMap<String, String> authorized_calendars = new HashMap<String, String>();
 
 		AccountManager acctmgr = AccountManager.get(app_context);
 		Account[] accounts = acctmgr.getAccountsByType("com.google");
-
+		
 		for (Account account : accounts) {
-			String key = account.name;
-			calendars.add(key);
+			String auth_token_type = "oauth2:https://www.googleapis.com/auth/calendar";
+			AccountManagerFuture<Bundle> amf = acctmgr.getAuthToken(account, auth_token_type, null, this, null, null);
+			
+			String authToken;
+			try {
+				Bundle authTokenBundle = amf.getResult();
+				authToken = authTokenBundle.getString(AccountManager.KEY_AUTHTOKEN);
+			} catch(Exception e) {
+				authToken = "";
+			}
+			authorized_calendars.put(account.name, authToken);
 		}
 
-		return calendars;
+		return authorized_calendars;
+	}
+	
+	/*
+	 * This method will query the google calendar api to retrieve all events
+	 * associated with calendar_name, and return a hashmap of names of events
+	 * along with the event itself in an HCEvent object
+	 */
+	private HashMap<String, HCEvent> getCalendarEvents(String calendar_name) {
+		HashMap<String, HCEvent> return_map = new HashMap<String, HCEvent>();
+		
+		return null;
+		
 	}
 
 
@@ -147,9 +181,9 @@ public class SyncCal extends Activity {
 	private static final int EVENT_END_INDEX = 3;
 
 	//returns an arraylist of events constructed from data queried from the android calendar
-//	private HashMap<String, Event> getCalendarEvents(String calendar_name) 
+//	private HashMap<String, HCEvent> getCalendarEvents(String calendar_name) 
 //	{
-//		HashMap<String, Event> events = new HashMap<String, Event>();
+//		HashMap<String, HCEvent> events = new HashMap<String, HCEvent>();
 //
 //		String calendarID = cal_map.get(calendar_name).toString();
 //
@@ -170,7 +204,7 @@ public class SyncCal extends Activity {
 //				Calendar event_end = Calendar.getInstance();
 //				event_end.setTimeInMillis(cur.getLong(EVENT_END_INDEX));
 //
-//				Event event = new Event(Integer.parseInt(event_id), event_title, event_start, event_end, null);
+//				HCEvent event = new HCEvent(Integer.parseInt(event_id), event_title, event_start, event_end, null);
 //				if (event != null) {
 //					events.put(event_title, event);
 //				}
@@ -204,9 +238,9 @@ public class SyncCal extends Activity {
 
 				//If the event is already in hushcal database, then update its status
 				if (event_status_map.keySet().contains(event_name)) {
-					//get the id from the Event with name event_name
+					//get the id from the HCEvent with name event_name
 					//int event_id = events_list.get(event_name).getId();
-					Event updated_event = events_list.get(event_name); //new Event(event_id, event_name, null, null, status);
+					HCEvent updated_event = events_list.get(event_name); //new HCEvent(event_id, event_name, null, null, status);
 					updated_event.setStatus(status);
 					//TODO: unschedule old event (might not have to do this because of PendingIntent.FLAG_UPDATE_CURRENT, need to test)
 					int updated = handler.updateEvent(updated_event);			
@@ -215,7 +249,7 @@ public class SyncCal extends Activity {
 				//otherwise (if you change an event taken from the android calendar but is not in
 				//hushcal database yet) add event to hushcal database with new status 
 				else {			
-					Event updated_event = events_list.get(event_name);
+					HCEvent updated_event = events_list.get(event_name);
 					updated_event.setStatus(status);
 					handler.addEvent(updated_event);
 					EventScheduler.schedule(app_context, updated_event);
@@ -231,9 +265,9 @@ public class SyncCal extends Activity {
 		public void onItemSelected(AdapterView<?> parent, View view, int pos,
 				long id) {
 //
-//			List<Event> tmp_events_list = handler.getAllEvents(); //turn this into event_status_map
+//			List<HCEvent> tmp_events_list = handler.getAllEvents(); //turn this into event_status_map
 //			event_status_map = new HashMap<String, String>();
-//			for (Event event : tmp_events_list) {
+//			for (HCEvent event : tmp_events_list) {
 //				String title = event.getName();
 //				String status = event.getStatus();
 //				event_status_map.put(title, status);

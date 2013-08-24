@@ -93,12 +93,12 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 				if(toast_list.isEmpty()) {					
 					insertIntoCalendar(beginTime, endTime, name.getText().toString());
-					Event new_event = new Event(name.getText().toString(), beginTime, endTime, status);
+					HCEvent new_event = new HCEvent(name.getText().toString(), beginTime, endTime, status);
 					handler.addEvent(new_event);
 					EventScheduler.schedule(app_context, new_event);
 					
 					//go back to home page
-					Toast.makeText(app_context, "Event created", Toast.LENGTH_SHORT).show();
+					Toast.makeText(app_context, "HCEvent created", Toast.LENGTH_SHORT).show();
 					Intent home_page = new Intent(app_context, MainActivity.class);
 					startActivity(home_page);
 				}
@@ -118,7 +118,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 				new CustomDateTimePicker.ICustomDateTimeListener() {
 
 			/**
-			 * Event thrown when time and date have been set
+			 * HCEvent thrown when time and date have been set
 			 * sets the TextView to the time and date
 			 * then sets the beginTime variable to be used later
 			 */

@@ -10,11 +10,11 @@ import android.widget.Toast;
 
 public class EventScheduler {
 
-	public static void schedule(Context ctx, Event event) {
+	public static void schedule(Context ctx, HCEvent hCEvent) {
 		//schedule method is being called, but the alarm manager is not being set for some reason
-		Calendar start = event.getStartTime();
-		long end = event.getEndTime().getTimeInMillis();
-		String status = event.getStatus();
+		Calendar start = hCEvent.getStartTime();
+		long end = hCEvent.getEndTime().getTimeInMillis();
+		String status = hCEvent.getStatus();
 
 		Intent intent = new Intent(ctx, AlarmReceiver.class);
 		intent.putExtra("time", end);

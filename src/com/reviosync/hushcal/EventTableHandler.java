@@ -50,17 +50,17 @@ public class EventTableHandler extends SQLiteOpenHelper {
 	}
 
 	// Adding new event
-	public void addEvent(Event event) {
+	public void addEvent(HCEvent hCEvent) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		Long start_time = event.getStartTime().getTimeInMillis();
-		Long end_time = event.getEndTime().getTimeInMillis();
+		Long start_time = hCEvent.getStartTime().getTimeInMillis();
+		Long end_time = hCEvent.getEndTime().getTimeInMillis();
 
 		ContentValues values = new ContentValues();
-		values.put(KEY_EVENT_NAME, event.getName());
+		values.put(KEY_EVENT_NAME, hCEvent.getName());
 		values.put(KEY_START_TIME, start_time);
 		values.put(KEY_END_TIME, end_time);
-		values.put(KEY_STATUS, event.getStatus());
+		values.put(KEY_STATUS, hCEvent.getStatus());
 
 		db.insert(EVENT_TABLE_NAME, null, values);
 		db.close();
@@ -68,8 +68,8 @@ public class EventTableHandler extends SQLiteOpenHelper {
 	}
 
 	// Getting All Events
-	public List<Event> getAllEvents() {
-		List<Event> eventsList = new ArrayList<Event>();
+	public List<HCEvent> getAllEvents() {
+		List<HCEvent> eventsList = new ArrayList<HCEvent>();
 
 		String selectQuery = "SELECT * FROM " + EVENT_TABLE_NAME;// + " WHERE " + KEY_START_TIME + " >= ?";
 		//String[] selectionArgs = {Calendar.getInstance().toString()};
@@ -81,19 +81,19 @@ public class EventTableHandler extends SQLiteOpenHelper {
 
 		if (cursor.moveToFirst()) {
 			do {
-				Event event = new Event();
+				HCEvent hCEvent = new HCEvent();
 				try {
-					event.setId(Integer.parseInt(cursor.getString(0)));
-					event.setName(cursor.getString(1));
+					hCEvent.setId(Integer.parseInt(cursor.getString(0)));
+					hCEvent.setName(cursor.getString(1));
 					inputCal.setTimeInMillis(cursor.getLong(2));
-					event.setStartTime(inputCal);
+					hCEvent.setStartTime(inputCal);
 					inputCal.setTimeInMillis(cursor.getLong(3));
-					event.setEndTime(inputCal);
-					event.setStatus(cursor.getString(4));
+					hCEvent.setEndTime(inputCal);
+					hCEvent.setStatus(cursor.getString(4));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				eventsList.add(event);
+				eventsList.add(hCEvent);
 			} while(cursor.moveToNext());
 		}
 		return eventsList;
@@ -110,31 +110,31 @@ public class EventTableHandler extends SQLiteOpenHelper {
 	}
 
 	// Updating single event
-	public int updateEvent(Event event) {
+	public int updateEvent(HCEvent hCEvent) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		ContentValues values = new ContentValues();
 		
-		Long start_time = event.getStartTime().getTimeInMillis();
-		Long end_time = event.getEndTime().getTimeInMillis();
+		Long start_time = hCEvent.getStartTime().getTimeInMillis();
+		Long end_time = hCEvent.getEndTime().getTimeInMillis();
 
-		if (event.getStartTime() != null && event.getEndTime() != null) {
+		if (hCEvent.getStartTime() != null && hCEvent.getEndTime() != null) {
 			values.put(KEY_START_TIME, start_time);
 			values.put(KEY_END_TIME, end_time);
 		}
-		values.put(KEY_EVENT_NAME, event.getName());
-		values.put(KEY_STATUS, event.getStatus());
+		values.put(KEY_EVENT_NAME, hCEvent.getName());
+		values.put(KEY_STATUS, hCEvent.getStatus());
 
 		return db.update(EVENT_TABLE_NAME, values, KEY_EVENT_NAME + " = ?" /* AND " + KEY_START_TIME + " = ?"*/, 
-				new String[] { event.getName()/*, event.getStartTime().toString()*/ });
+				new String[] { hCEvent.getName()/*, event.getStartTime().toString()*/ });
 	}
 
 	// Deleting single event
-	public void deleteEvent(Event event) {
+	public void deleteEvent(HCEvent hCEvent) {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		db.delete(EVENT_TABLE_NAME, KEY_ID + "=?", 
-				new String[] { String.valueOf(event.getId()) });
+				new String[] { String.valueOf(hCEvent.getId()) });
 		db.close();
 	}
 
