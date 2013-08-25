@@ -1,14 +1,14 @@
-# view AndroidManifest.xml #generated:37
+# view AndroidManifest.xml #generated:43
 -keep class com.reviosync.hushcal.AddEvent { <init>(...); }
 
-# view AndroidManifest.xml #generated:41
-# view AndroidManifest.xml #generated:45
+# view AndroidManifest.xml #generated:48
+# view AndroidManifest.xml #generated:52
 -keep class com.reviosync.hushcal.AlarmReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:20
+# view AndroidManifest.xml #generated:23
 -keep class com.reviosync.hushcal.MainActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:34
+# view AndroidManifest.xml #generated:39
 -keep class com.reviosync.hushcal.SyncCal { <init>(...); }
 
 # onClick res/layout/activity_main.xml #generated:30

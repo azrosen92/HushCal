@@ -1,5 +1,6 @@
 package com.reviosync.hushcal;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -7,6 +8,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.services.calendar.Calendar.CalendarList;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.reviosync.hushcal.R;
 
 import android.accounts.Account;
@@ -43,6 +48,7 @@ public class SyncCal extends Activity {
 	private static HashMap<String, String> event_status_map; //list of event names and statuses taken from hushcal database
 
 	static Context app_context;
+	private static com.google.api.services.calendar.Calendar client;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -157,11 +163,27 @@ public class SyncCal extends Activity {
 	 * associated with calendar_name, and return a hashmap of names of events
 	 * along with the event itself in an HCEvent object
 	 */
-	private HashMap<String, HCEvent> getCalendarEvents(String calendar_name) {
+	private HashMap<String, HCEvent> getCalendarEvents(String calendar_name) throws IOException {
+		Credential credential = null;
+		
 		HashMap<String, HCEvent> return_map = new HashMap<String, HCEvent>();
-		
-		return null;
-		
+		com.google.api.services.calendar.Calendar service = null; //create a Calendar object using the oauth token for associated with calendar_name
+		com.google.api.services.calendar.model.Events events = service.events().list(calendar_name).setPageToken(null).execute();
+		List<Event> items = events.getItems();
+		/*
+		 * do something with the events
+		 */
+		for (Event event : items) {
+			String event_name = event.getDescription();
+			EventDateTime event_start = event.getStart();
+			long start = event_start.getDateTime().getValue();
+			EventDateTime event_end = event.getEnd();
+			long end = event_end.getDateTime().getValue();
+			String event_id = event.getId();
+			HCEvent hCEvent = new HCEvent(Integer.parseInt(event_id), event_name, start, end, null);
+			return_map.put(event_name, hCEvent);
+		}
+		return return_map;
 	}
 
 

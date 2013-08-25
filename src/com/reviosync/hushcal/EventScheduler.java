@@ -12,8 +12,8 @@ public class EventScheduler {
 
 	public static void schedule(Context ctx, HCEvent hCEvent) {
 		//schedule method is being called, but the alarm manager is not being set for some reason
-		Calendar start = hCEvent.getStartTime();
-		long end = hCEvent.getEndTime().getTimeInMillis();
+		long start = hCEvent.getStartTime();
+		long end = hCEvent.getEndTime();
 		String status = hCEvent.getStatus();
 
 		Intent intent = new Intent(ctx, AlarmReceiver.class);
@@ -22,7 +22,7 @@ public class EventScheduler {
 		
 		PendingIntent sender = PendingIntent.getBroadcast(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, start.getTimeInMillis(), sender);
+		am.set(AlarmManager.RTC_WAKEUP, start, sender);
 	}
 	
 	public static void unschedule(Context ctx, Calendar time, String status) {

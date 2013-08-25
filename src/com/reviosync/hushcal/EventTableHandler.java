@@ -28,7 +28,7 @@ public class EventTableHandler extends SQLiteOpenHelper {
 	private static final String EVENT_TABLE_NAME = "events";
 	private static final String EVENT_TABLE_CREATE =
 			"CREATE TABLE " + EVENT_TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY, " 
-					+ KEY_EVENT_NAME + " TEXT, " + KEY_START_TIME + " DATETIME, " + KEY_END_TIME + " DATETIME, " 
+					+ KEY_EVENT_NAME + " TEXT, " + KEY_START_TIME + " INTEGER, " + KEY_END_TIME + " INTEGER, " 
 					+ KEY_STATUS + " TEXT" +  ");";
 
 	EventTableHandler (Context context) {
@@ -52,14 +52,11 @@ public class EventTableHandler extends SQLiteOpenHelper {
 	// Adding new event
 	public void addEvent(HCEvent hCEvent) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		
-		Long start_time = hCEvent.getStartTime().getTimeInMillis();
-		Long end_time = hCEvent.getEndTime().getTimeInMillis();
 
 		ContentValues values = new ContentValues();
 		values.put(KEY_EVENT_NAME, hCEvent.getName());
-		values.put(KEY_START_TIME, start_time);
-		values.put(KEY_END_TIME, end_time);
+		values.put(KEY_START_TIME, hCEvent.getStartTime());
+		values.put(KEY_END_TIME, hCEvent.getEndTime());
 		values.put(KEY_STATUS, hCEvent.getStatus());
 
 		db.insert(EVENT_TABLE_NAME, null, values);
@@ -76,19 +73,15 @@ public class EventTableHandler extends SQLiteOpenHelper {
 
 		SQLiteDatabase db = this.getWritableDatabase();
 		Cursor cursor = db.rawQuery(selectQuery, null);
-
-		Calendar inputCal = Calendar.getInstance();
-
+		
 		if (cursor.moveToFirst()) {
 			do {
 				HCEvent hCEvent = new HCEvent();
 				try {
 					hCEvent.setId(Integer.parseInt(cursor.getString(0)));
 					hCEvent.setName(cursor.getString(1));
-					inputCal.setTimeInMillis(cursor.getLong(2));
-					hCEvent.setStartTime(inputCal);
-					inputCal.setTimeInMillis(cursor.getLong(3));
-					hCEvent.setEndTime(inputCal);
+					hCEvent.setStartTime(cursor.getLong(2));
+					hCEvent.setEndTime(cursor.getLong(3));
 					hCEvent.setStatus(cursor.getString(4));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -115,10 +108,10 @@ public class EventTableHandler extends SQLiteOpenHelper {
 
 		ContentValues values = new ContentValues();
 		
-		Long start_time = hCEvent.getStartTime().getTimeInMillis();
-		Long end_time = hCEvent.getEndTime().getTimeInMillis();
+		Long start_time = hCEvent.getStartTime();
+		Long end_time = hCEvent.getEndTime();
 
-		if (hCEvent.getStartTime() != null && hCEvent.getEndTime() != null) {
+		if (hCEvent.getStartTime() != 0 && hCEvent.getEndTime() != 0) {
 			values.put(KEY_START_TIME, start_time);
 			values.put(KEY_END_TIME, end_time);
 		}

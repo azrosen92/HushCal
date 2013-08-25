@@ -43,6 +43,9 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 
 	boolean is_end_time_set = false;
 	boolean is_start_time_set = false;
+	
+	static long beginTime = 0L;
+	static long endTime = 0L;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,9 +55,6 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 		app_context = getApplicationContext();
 
 		handler = new EventTableHandler(this);
-
-		final Calendar beginTime = Calendar.getInstance();
-		final Calendar endTime = Calendar.getInstance();
 
 		final EditText name = (EditText)findViewById(R.id.edit_event_name);
 
@@ -92,7 +92,7 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 				}
 
 				if(toast_list.isEmpty()) {					
-					insertIntoCalendar(beginTime, endTime, name.getText().toString());
+					//insertIntoCalendar(beginTime, endTime, name.getText().toString());
 					HCEvent new_event = new HCEvent(name.getText().toString(), beginTime, endTime, status);
 					handler.addEvent(new_event);
 					EventScheduler.schedule(app_context, new_event);
@@ -140,7 +140,9 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 							.get(Calendar.DAY_OF_MONTH) + "/" + year
 							+ ", " + hour12 + ":" + min_string
 							+ " " + AM_PM);
-					beginTime.set(year, monthNumber, date, hour24, min);
+					Calendar calBeginTime = Calendar.getInstance();
+					calBeginTime.set(year, monthNumber, date, hour24, min);
+					beginTime = calBeginTime.getTimeInMillis();
 				}
 				else if (mButtonPressed == R.id.set_end) {
 					((TextView) findViewById(R.id.end_time_label))
@@ -149,7 +151,9 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 							.get(Calendar.DAY_OF_MONTH) + "/" + year
 							+ ", " + hour12 + ":" + min_string
 							+ " " + AM_PM);
-					endTime.set(year, monthNumber, date, hour24, min);
+					Calendar calEndTime = Calendar.getInstance();
+					calEndTime.set(year, monthNumber, date, hour24, min);
+					endTime = calEndTime.getTimeInMillis();
 				}
 			}
 
@@ -213,27 +217,27 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 	//returns the event_id from the android calendar, queried by event name, and time
 	//the only problem I could see with this is if there are two events at the same time
 	//with the same name, in which case I can't see it mattering which one you get the id from.
-	protected int getEventIdFromCalendar(Calendar beginTime, Calendar endTime,
-			String title) {
-		int event_id = 0;
-		
-		// Run query
-		Cursor cur = null;
-		ContentResolver cr = getContentResolver();
-		Uri uri = Events.CONTENT_URI;
-		String[] projection = { Events.ORIGINAL_ID };
-		String selection = "((" + Events.DTSTART + " = ?) AND (" 
-				+ Events.DTEND + " = ?) AND (" + Events.TITLE + " = ?))";
-		String[] selectionArgs = { String.valueOf(beginTime.getTimeInMillis()), 
-				String.valueOf(endTime.getTimeInMillis()), 
-				title};
-		cur = cr.query(uri, projection, selection, selectionArgs, "original_id DESC");
-		
-		if(cur.moveToNext()) {
-			event_id = Integer.parseInt(cur.getString(0));
-		}
-		return event_id;
-	}
+//	protected int getEventIdFromCalendar(Calendar beginTime, Calendar endTime,
+//			String title) {
+//		int event_id = 0;
+//		
+//		// Run query
+//		Cursor cur = null;
+//		ContentResolver cr = getContentResolver();
+//		Uri uri = Events.CONTENT_URI;
+//		String[] projection = { Events.ORIGINAL_ID };
+//		String selection = "((" + Events.DTSTART + " = ?) AND (" 
+//				+ Events.DTEND + " = ?) AND (" + Events.TITLE + " = ?))";
+//		String[] selectionArgs = { String.valueOf(beginTime.getTimeInMillis()), 
+//				String.valueOf(endTime.getTimeInMillis()), 
+//				title};
+//		cur = cr.query(uri, projection, selection, selectionArgs, "original_id DESC");
+//		
+//		if(cur.moveToNext()) {
+//			event_id = Integer.parseInt(cur.getString(0));
+//		}
+//		return event_id;
+//	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -258,18 +262,18 @@ public class AddEvent extends FragmentActivity implements OnClickListener {
 	}
 
 	//inserts information from the form into the hushcal database
-	public void insertIntoCalendar(Calendar startTime, Calendar endTime, String name) {
-		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
-			Intent intent = new Intent(Intent.ACTION_INSERT);
-			intent.setType("vnd.android.cursor.item/event");
-			intent.setData(CalendarContract.Events.CONTENT_URI);
-			intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime.getTimeInMillis());
-			intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
-			intent.putExtra(Events.TITLE, name);
-			startActivity(intent);
-		}
-		else {
-			//TODO: add event with google calendar api (low priority, maybe save for update)
-		}
-	}
+//	public void insertIntoCalendar(long startTime, long endTime, String name) {
+//		if (android.os.Build.VERSION.SDK_INT >= 4.0) {
+//			Intent intent = new Intent(Intent.ACTION_INSERT);
+//			intent.setType("vnd.android.cursor.item/event");
+//			intent.setData(CalendarContract.Events.CONTENT_URI);
+//			intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startTime);
+//			intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime);
+//			intent.putExtra(Events.TITLE, name);
+//			startActivity(intent);
+//		}
+//		else {
+//			//TODO: add event with google calendar api (low priority, maybe save for update)
+//		}
+//	}
 }

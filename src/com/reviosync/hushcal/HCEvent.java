@@ -6,15 +6,15 @@ public class HCEvent {
 
 	int id;
 	private String name;
-	private Calendar start_time;
-	private Calendar end_time;
+	private long start_time;
+	private long end_time;
 	private String status;
 	
 	public HCEvent() {
 		
 	}
 	
-	public HCEvent(int id, String name, Calendar start_time, Calendar end_time, String status) {
+	public HCEvent(int id, String name, long start_time, long end_time, String status) {
 		this.id = id;
 		this.name = name;
 		this.start_time = start_time;
@@ -22,7 +22,7 @@ public class HCEvent {
 		this.status = status;
 	}
 	
-	public HCEvent(String name, Calendar start_time, Calendar end_time, String status) {
+	public HCEvent(String name, long start_time, long end_time, String status) {
 		this.name = name;
 		this.start_time = start_time;
 		this.end_time = end_time;
@@ -45,19 +45,19 @@ public class HCEvent {
 		this.name = name;
 	}
 	
-	public Calendar getStartTime() {
+	public long getStartTime() {
 		return this.start_time;
 	}
 	
-	public void setStartTime(Calendar start_time) {
+	public void setStartTime(long start_time) {
 		this.start_time = start_time;
 	}
 	
-	public Calendar getEndTime() {
+	public long getEndTime() {
 		return this.end_time;
 	}
 	
-	public void setEndTime(Calendar end_time) {
+	public void setEndTime(long end_time) {
 		this.end_time = end_time;
 	}
 	
