@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.reviosync.hushcal.R;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -17,7 +18,6 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Calendars;
 import android.provider.CalendarContract.Events;
-import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -33,7 +33,7 @@ import android.widget.Toast;
 
 //TODO: make sure data is persistent when upgraded in app store
 @SuppressWarnings("unused")
-public class AddEvent extends FragmentActivity implements OnClickListener {
+public class AddEvent extends Activity implements OnClickListener {
 
 	CustomDateTimePicker custom;
 	private int mButtonPressed;
